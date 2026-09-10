@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tejas Telkar — Open Source Apps & Systems</title>
+  <meta name="description" content="Open source macOS applications, AI systems, and native software crafted by Tejas Telkar. Featuring Foldy, DuoSound, and more.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tejas Telkar">
+  <meta property="og:title" content="Tejas Telkar — Open Source Apps & Systems">
+  <meta property="og:description" content="Open source macOS applications, AI systems, and native software crafted by Tejas Telkar.">
+  <meta property="og:image" content="/assets/tejas.png">
+  <link rel="icon" href="/assets/foldy-icon.png" type="image/png">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+</head>
+<body>
+  <!-- Real-Time Online Visitors Presence Pill -->
+  <aside class="presence-counter" id="presenceCounter" title="Live active visitors across Tejas Telkar's open source hub">
+    <span class="counter-content counter-live">
+      <span class="live-dot"></span>
+      <strong id="onlineCount">18</strong>
+      <span class="presence-label">users online live</span>
+    </span>
+    <span class="counter-content counter-info" id="presenceHint">
+      Real-time active visitors browsing repositories
+    </span>
+  </aside>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <a class="wordmark" href="/">
+        <img src="/assets/tejas.png" alt="Tejas Telkar" class="avatar-logo" width="30" height="30">
+        <span class="brand-name">Tejas Telkar</span>
+      </a>
+      <span class="badge role">Open Source</span>
+      <a class="pill" href="https://github.com/tejastelkar" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span>github.com/tejastelkar</span>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 6h7M6.5 3 9.5 6l-3 3"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- Hero / Profile Intro -->
+    <section class="profile-hero">
+      <div class="profile-card">
+        <div class="profile-photo-wrapper">
+          <img src="/assets/tejas.png" alt="Tejas Telkar" class="profile-photo" width="160" height="160">
+          <span class="status-indicator-badge" title="Active building open source">
+            <span class="status-dot"></span> Available to collaborate
+          </span>
+        </div>
+
+        <div class="profile-details">
+          <div class="hero-kicker">
+            <span class="kicker-sparkle">✦</span> AI Engineer & Systems Builder · Pune, India
+          </div>
+          <h1>Crafting fluid Mac apps and intelligent systems.</h1>
+          <p class="lede">
+            Hey, I'm <strong>Tejas Telkar</strong>. I design and build high-performance open-source software, native macOS utilities, and production AI architectures. Every project here is built to feel tactile, fast, and private.
+          </p>
+
+          <div class="profile-links-row">
+            <a href="https://github.com/tejastelkar" target="_blank" rel="noopener" class="button primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>GitHub Repositories</span>
+              <span class="amount">★ Follow</span>
+            </a>
+            <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="kofi-pill-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+              <span>Support on Ko-fi</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open Source Apps Showcase -->
+    <section class="showcase-section">
+      <div class="showcase-header">
+        <span class="section-badge">FEATURED PROJECTS</span>
+        <h2>Published Open Source Applications</h2>
+        <p class="section-lede">Native Mac utilities, AI agents, and resilient web infrastructure available on GitHub.</p>
+      </div>
+
+      <div class="apps-grid">
+        <!-- App 1: Foldy -->
+        <article class="app-card featured-app">
+          <div class="card-top">
+            <img src="/assets/foldy-icon.png" alt="Foldy App Icon" class="app-icon" width="64" height="64">
+            <div class="app-title-wrap">
+              <div class="app-name-row">
+                <h3>Foldy</h3>
+                <span class="app-tag-pill macos">macOS 14+</span>
+                <span class="app-tag-pill new">New</span>
+              </div>
+              <p class="app-tagline">Physical depth and hinge kinetics for MacBook</p>
+            </div>
+          </div>
+
+          <p class="app-description">
+            The fluid fold from iPhone Duo, engineered with Metal 3 shaders for the lid you already have. Your desktop tilts down, blurs, and settles with real-time IOKit hinge sensor hardware tracking at 120Hz ProMotion.
+          </p>
+
+          <div class="app-tech-tags">
+            <span class="tech-chip">Swift 6</span>
+            <span class="tech-chip">SwiftUI</span>
+            <span class="tech-chip">Metal 3 Shaders</span>
+            <span class="tech-chip">ScreenCaptureKit</span>
+            <span class="tech-chip">IOKit HID</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/tejastelkar/foldy" target="_blank" rel="noopener" class="card-btn primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>View Repository</span>
+            </a>
+            <a href="http://localhost:3000" target="_blank" rel="noopener" class="card-btn secondary">
+              <span>Interactive Site ↗</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- App 2: DuoSound -->
+        <article class="app-card featured-app">
+          <div class="card-top">
+            <img src="/assets/duosound-logo.png" alt="DuoSound Logo" class="app-icon" width="64" height="64">
+            <div class="app-title-wrap">
+              <div class="app-name-row">
+                <h3>DuoSound</h3>
+                <span class="app-tag-pill macos">macOS 13+</span>
+                <span class="app-tag-pill popular">Homebrew</span>
+              </div>
+              <p class="app-tagline">Dual multi-device audio routing for Mac</p>
+            </div>
+          </div>
+
+          <p class="app-description">
+            A native macOS menu bar utility that lets you play audio across two or more output devices simultaneously with one click. Zero external drivers, zero Soundflower, zero kernel extensions. Pure CoreAudio HAL aggregate routing.
+          </p>
+
+          <div class="app-tech-tags">
+            <span class="tech-chip">Swift 5.9</span>
+            <span class="tech-chip">CoreAudio HAL</span>
+            <span class="tech-chip">AudioAggregateDevice</span>
+            <span class="tech-chip">Menu Bar Extra</span>
+            <span class="tech-chip">Zero Drivers</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/tejastelkar/duosound" target="_blank" rel="noopener" class="card-btn primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>View Repository</span>
+            </a>
+            <a href="https://github.com/tejastelkar/duosound/releases" target="_blank" rel="noopener" class="card-btn secondary">
+              <span>Releases DMG ↗</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- App 3: TrackParcel -->
+        <article class="app-card">
+          <div class="card-top">
+            <img src="/assets/trackparcel.png" alt="TrackParcel Preview" class="app-icon rect" width="64" height="64">
+            <div class="app-title-wrap">
+              <div class="app-name-row">
+                <h3>TrackParcel</h3>
+                <span class="app-tag-pill web">Web App</span>
+              </div>
+              <p class="app-tagline">Unified multi-carrier shipment intelligence</p>
+            </div>
+          </div>
+
+          <p class="app-description">
+            Unified package tracking engine tailored for Indian couriers (Delhivery, BlueDart, DTDC, India Post). Containerized microservices, high-concurrency scraping with AWS Lambda egress, and sub-second cache lookups via Valkey and Cloudflare.
+          </p>
+
+          <div class="app-tech-tags">
+            <span class="tech-chip">Next.js 15</span>
+            <span class="tech-chip">Cloudflare</span>
+            <span class="tech-chip">Supabase</span>
+            <span class="tech-chip">AWS Lambda</span>
+            <span class="tech-chip">Valkey Cache</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/tejastelkar/trackparcel" target="_blank" rel="noopener" class="card-btn primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>View Repository</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- App 4: NeuroLearn AI -->
+        <article class="app-card">
+          <div class="card-top">
+            <img src="/assets/neurolearn.png" alt="NeuroLearn AI Preview" class="app-icon rect" width="64" height="64">
+            <div class="app-title-wrap">
+              <div class="app-name-row">
+                <h3>NeuroLearn AI</h3>
+                <span class="app-tag-pill ai">AI Agent</span>
+              </div>
+              <p class="app-tagline">Adaptive career readiness & mock interview simulator</p>
+            </div>
+          </div>
+
+          <p class="app-description">
+            Interactive AI interview preparation platform combining real-time voice feedback, dynamic technical evaluation, and personalized career roadmaps powered by LLM agent orchestration.
+          </p>
+
+          <div class="app-tech-tags">
+            <span class="tech-chip">LangChain</span>
+            <span class="tech-chip">OpenAI / Claude</span>
+            <span class="tech-chip">WebRTC Audio</span>
+            <span class="tech-chip">FastAPI</span>
+            <span class="tech-chip">React</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/tejastelkar/NeuroLearn-Ai" target="_blank" rel="noopener" class="card-btn primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>View Repository</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- App 5: MyHishob -->
+        <article class="app-card">
+          <div class="card-top">
+            <img src="/assets/myhishob.png" alt="MyHishob Preview" class="app-icon rect" width="64" height="64">
+            <div class="app-title-wrap">
+              <div class="app-name-row">
+                <h3>MyHishob</h3>
+                <span class="app-tag-pill web">Fintech</span>
+              </div>
+              <p class="app-tagline">Minimalist ledger & cash flow companion</p>
+            </div>
+          </div>
+
+          <p class="app-description">
+            A fast, privacy-preserving double-entry ledger tool designed for individual creators, freelancers, and small merchants with offline sync, instant analytics, and automated tax categorization.
+          </p>
+
+          <div class="app-tech-tags">
+            <span class="tech-chip">TypeScript</span>
+            <span class="tech-chip">PostgreSQL</span>
+            <span class="tech-chip">TailwindCSS</span>
+            <span class="tech-chip">Prisma</span>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/tejastelkar/myhishob" target="_blank" rel="noopener" class="card-btn primary">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>View Repository</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Engineering Values & Philosophy -->
+    <div class="stack">
+      <section class="card">
+        <h2>Engineering Principles</h2>
+        <dl>
+          <div class="row">
+            <dt>Native Performance</dt>
+            <dd>Built directly on platform primitives — Metal 3, ScreenCaptureKit, and CoreAudio on macOS; Next.js and Cloudflare edge workers on the web. Zero unnecessary bloat or battery drain.</dd>
+          </div>
+          <div class="row">
+            <dt>Private by Default</dt>
+            <dd>Framebuffers, audio packets, and user sessions remain on-device in volatile RAM. No telemetry packages, no trackers, no user fingerprinting.</dd>
+          </div>
+          <div class="row">
+            <dt>Open Source First</dt>
+            <dd>All applications are open source under MIT or permissive licenses. Inspect the code, fork it, audit it, or contribute back to the community.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- About Tejas Telkar Section -->
+      <section class="card about-card" id="about">
+        <h2>About Tejas Telkar</h2>
+        <div class="about-content-box">
+          <p>
+            I am a Software and AI Engineer from Pune, India, holding a Bachelor of Computer Engineering from SPPU (Class of 2026, CGPA 8.4). My work focuses on building autonomous AI pipelines, agentic developer workflows, and macOS software.
+          </p>
+          <p>
+            I believe that great software blends deep systems engineering with meticulous visual and haptic design. When not writing Swift shaders or Python agent graphs, I explore photography, mechanical keyboards, and open-source tooling.
+          </p>
+          <div class="social-chips">
+            <a href="https://github.com/tejastelkar" target="_blank" rel="noopener" class="social-chip">
+              <span>GitHub</span> ↗
+            </a>
+            <a href="https://x.com/tejastelkar" target="_blank" rel="noopener" class="social-chip">
+              <span>X (Twitter)</span> ↗
+            </a>
+            <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="social-chip kofi">
+              <span>☕️ Ko-fi</span> ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="footer-left">
+          <span>© <span id="year"></span> Tejas Telkar. Open-source software with craftsmanship.</span>
+        </div>
+        <nav class="links">
+          <a href="https://github.com/tejastelkar" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener">Ko-fi</a>
+          <a href="https://x.com/tejastelkar" target="_blank" rel="noopener">X</a>
+        </nav>
+      </footer>
+    </div>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
