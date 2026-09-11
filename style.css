@@ -295,45 +295,6 @@ body {
   font-weight: 700;
 }
 
-.bio-badges {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.bio-badge {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 14px;
-  border-radius: var(--radius-md);
-  background: var(--surface-alt);
-  border: 1px solid var(--line-subtle);
-}
-
-.badge-icon {
-  font-size: 17px;
-  flex-shrink: 0;
-}
-
-.badge-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.35;
-}
-
-.badge-text strong {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.badge-text span {
-  font-size: 12px;
-  color: var(--muted);
-}
-
 .hero-action-row {
   display: flex;
   align-items: center;
