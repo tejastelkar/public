@@ -530,6 +530,25 @@ const Wallpapers = {
     new LivePresenceEngine();
   }
 
+  // Homebrew Copy Button
+  const copyBrewBtn = document.getElementById("copyBrewBtn");
+  const brewBox = document.getElementById("brewBox");
+  const copyText = document.getElementById("copyText");
+  if (copyBrewBtn && brewBox) {
+    const doCopy = () => {
+      navigator.clipboard.writeText("brew install --cask foldy").then(() => {
+        if (copyText) copyText.textContent = "Copied!";
+        setTimeout(() => { if (copyText) copyText.textContent = "Copy"; }, 2000);
+      });
+    };
+    copyBrewBtn.addEventListener("click", doCopy);
+    brewBox.addEventListener("click", (e) => {
+      if (e.target !== copyBrewBtn && !copyBrewBtn.contains(e.target)) {
+        doCopy();
+      }
+    });
+  }
+
   // Handle standalone dev port 3000 navigation to main home hub
   if (window.location.port === '3000') {
     const allAppsBtn = document.querySelector('.back-pill');

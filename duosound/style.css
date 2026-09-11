@@ -41,7 +41,7 @@ body {
 }
 
 .stage {
-  max-width: 680px;
+  max-width: 780px;
   margin: 0 auto;
   padding: 110px 24px 72px;
 }
@@ -303,8 +303,14 @@ h1 {
 .purchase-row {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .purchase-row {
+    flex-wrap: wrap;
+  }
 }
 
 .button {
@@ -318,6 +324,7 @@ h1 {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+  white-space: nowrap;
   transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -338,11 +345,6 @@ h1 {
   opacity: 0.72;
 }
 
-.purchase-plus {
-  color: var(--muted);
-  font-size: 16px;
-}
-
 .brew-box {
   display: inline-flex;
   align-items: center;
@@ -355,6 +357,14 @@ h1 {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12.5px;
   color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.brew-box:hover {
+  background: #ebebee;
+  border-color: rgba(0, 0, 0, 0.14);
 }
 
 .copy-btn {
