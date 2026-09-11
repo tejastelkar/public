@@ -529,4 +529,12 @@ const Wallpapers = {
   if (document.getElementById('onlineCount')) {
     new LivePresenceEngine();
   }
+
+  // Handle standalone dev port 3000 navigation to main home hub
+  if (window.location.port === '3000') {
+    const allAppsBtn = document.querySelector('.back-pill');
+    if (allAppsBtn) allAppsBtn.href = 'http://localhost:3001/';
+    const homeWordmark = document.querySelector('.wordmark');
+    if (homeWordmark) homeWordmark.href = 'http://localhost:3001/';
+  }
 })();

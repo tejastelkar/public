@@ -43,12 +43,12 @@ body {
   padding: 104px 24px 80px;
 }
 
-/* Real-Time Online Visitors Presence Pill (Top Right, exactly matches Home) */
+/* Real-Time Online Visitors Presence Pill (Aligned inside Topbar) */
 .presence-counter {
-  position: fixed;
-  top: 22px;
-  right: 24px;
-  z-index: 90;
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: 1;
   margin: 0;
   display: inline-flex;
   flex-direction: column;
@@ -58,7 +58,7 @@ body {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--line);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   cursor: default;
   user-select: none;
   transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
@@ -67,7 +67,7 @@ body {
 
 .presence-counter:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   border-color: rgba(0, 0, 0, 0.14);
 }
 
@@ -126,26 +126,6 @@ body {
   pointer-events: none;
 }
 
-/* Inline Bend Counter Badge (interactive feedback in hero) */
-.bend-counter-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  font-size: 13px;
-  color: var(--ink);
-  user-select: none;
-  font-weight: 500;
-}
-.bend-counter-inline strong {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
 /* Top Navigation Bar (matching Home) */
 .topbar {
   position: fixed;
@@ -153,14 +133,22 @@ body {
   left: 0;
   right: 0;
   height: 64px;
-  z-index: 80;
+  z-index: 90;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 28px;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--line);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 .brand {
   display: inline-flex;
@@ -1237,10 +1225,5 @@ footer .links {
   .row {
     grid-template-columns: 1fr;
     gap: 4px;
-  }
-  .bend-counter {
-    top: auto;
-    bottom: 20px;
-    right: 20px;
   }
 }

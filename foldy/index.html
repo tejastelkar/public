@@ -18,18 +18,6 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 </head>
 <body>
-  <!-- Real-Time Online Visitors Presence Pill (Matching Home) -->
-  <aside class="presence-counter" id="presenceCounter" title="Live active visitors across Tejas Telkar's open source hub">
-    <span class="counter-content counter-live">
-      <span class="live-dot"></span>
-      <strong id="onlineCount">18</strong>
-      <span class="presence-label">users online live</span>
-    </span>
-    <span class="counter-content counter-info" id="presenceHint">
-      Real-time active visitors browsing Foldy
-    </span>
-  </aside>
-
   <!-- Top Navigation Bar (Matching Home) -->
   <header class="topbar">
     <div class="brand">
@@ -48,9 +36,23 @@
         <span>github.com/tejastelkar/foldy</span>
         <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 6h7M6.5 3 9.5 6l-3 3"/></svg>
       </a>
-      <a class="pill back-pill" href="/" title="Back to All Apps">
+      <a class="pill back-pill" href="/" title="Back to Homepage">
         <span>← All Apps</span>
       </a>
+    </div>
+
+    <!-- Real-Time Online Visitors Presence Pill (Aligned in Topbar) -->
+    <div class="topbar-actions">
+      <aside class="presence-counter" id="presenceCounter" title="Live active visitors across Tejas Telkar's open source hub">
+        <span class="counter-content counter-live">
+          <span class="live-dot"></span>
+          <strong id="onlineCount">18</strong>
+          <span class="presence-label">users online today</span>
+        </span>
+        <span class="counter-content counter-info" id="presenceHint">
+          Real-time active visitors browsing Foldy
+        </span>
+      </aside>
     </div>
   </header>
 
@@ -72,11 +74,6 @@
           <span>Download Foldy</span>
           <span class="amount">v1.0 · 1.4 MB · Free</span>
         </a>
-        <div class="bend-counter-inline" title="Bends made by visitors. Scroll or drag the hinge slider!">
-          <span class="live-dot"></span>
-          <strong id="bendTotal">1,420</strong>
-          <span>bends simulated</span>
-        </div>
         <span class="purchase-plus" aria-hidden="true">+</span>
         <a class="kofi-bonus" href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener">
           <div class="kofi-icon-box">
