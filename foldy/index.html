@@ -93,7 +93,9 @@
       <div class="simulator-bar">
         <div class="sim-group angle-scrubber-group">
           <label for="hingeAngleSlider">
-            <span class="sim-icon">💻</span>
+            <span class="sim-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+            </span>
             <span class="sim-label">Lid Angle:</span>
             <strong id="angleReadout">110°</strong>
           </label>
@@ -110,9 +112,9 @@
         <div class="sim-group style-switcher-group">
           <span class="sim-label">Material:</span>
           <div class="segmented-control" id="styleSegmented">
-            <button class="segment active" data-style="silk" title="Silk: Soft liquid highlights and natural motion">✨ Silk</button>
-            <button class="segment" data-style="shade" title="Shade: Dramatic cinematic horizon shadows">🌑 Shade</button>
-            <button class="segment" data-style="frost" title="Frost: Frosted glass prism and liquid sheen">❄️ Frost</button>
+            <button class="segment active" data-style="silk" title="Silk: Soft liquid highlights and natural motion">Silk</button>
+            <button class="segment" data-style="shade" title="Shade: Dramatic cinematic horizon shadows">Shade</button>
+            <button class="segment" data-style="frost" title="Frost: Frosted glass prism and liquid sheen">Frost</button>
           </div>
         </div>
 
@@ -168,7 +170,7 @@
               <div class="macos-desktop-overlay">
                 <div class="macos-menubar">
                   <div class="menubar-left">
-                    <span class="apple-logo"></span>
+                    <span class="apple-logo"><svg width="12" height="12" viewBox="0 0 170 170" fill="currentColor"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.59-7.71-11.66-14.01-6.19-9.57-11.05-20.72-14.58-33.45-3.53-12.73-5.3-24.84-5.3-36.33 0-14.15 3.44-26.07 10.33-35.76 6.89-9.69 15.69-14.63 26.4-14.83 5.44 0 11.05 1.52 16.84 4.56 5.79 3.04 9.77 4.62 11.95 4.74 1.85 0 6.09-1.68 12.72-5.04 6.63-3.36 12.78-4.79 18.45-4.29 13.92.87 24.63 6.13 32.13 15.78-11.96 7.29-17.72 17.39-17.28 30.3.43 10.22 4.35 18.7 11.74 25.43 7.39 6.74 16.3 10.76 26.74 12.06-2.18 6.53-4.89 13.04-8.15 19.53zM119.22 31.02c0-7.39 2.66-14.24 7.98-20.55 5.33-6.3 11.9-10.46 19.72-12.47-.22 2.61-.87 5.33-1.96 8.15-1.09 2.83-2.66 5.54-4.73 8.15-2.28 2.83-5.11 5.33-8.48 7.5-3.37 2.17-6.85 3.59-10.43 4.24-.22-2.39-1.1-4.89-2.1-5.02z"/></svg></span>
                     <span class="active-app">Foldy</span>
                     <span class="menu-item">File</span>
                     <span class="menu-item">Edit</span>
@@ -237,22 +239,30 @@
             <div class="sidebar-section">
               <span class="sidebar-section-title">CONFIGURATION</span>
               <button class="sidebar-item active" data-tab="appearance">
-                <span class="sidebar-icon purple">🌓</span>
+                <span class="sidebar-icon purple">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18V3z"/></svg>
+                </span>
                 <span>Appearance</span>
               </button>
               <button class="sidebar-item" data-tab="general">
-                <span class="sidebar-icon blue">⚙️</span>
+                <span class="sidebar-icon blue">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </span>
                 <span>General</span>
               </button>
             </div>
             <div class="sidebar-section">
               <span class="sidebar-section-title">FOLDY</span>
               <button class="sidebar-item" data-tab="support">
-                <span class="sidebar-icon orange">☕️</span>
+                <span class="sidebar-icon orange">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                </span>
                 <span>Buy Me a Coffee</span>
               </button>
               <button class="sidebar-item" data-tab="about">
-                <span class="sidebar-icon gray">ℹ️</span>
+                <span class="sidebar-icon gray">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </span>
                 <span>About</span>
               </button>
             </div>
@@ -269,17 +279,23 @@
                 <div class="group-title">MATERIAL STYLE</div>
                 <div class="style-cards-grid">
                   <div class="web-style-card active" data-web-style="silk">
-                    <div class="card-icon">✨</div>
+                    <div class="card-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c4-4 8-4 12 0s8 4 12 0"></path><path d="M2 7c4-4 8-4 12 0s8 4 12 0"></path><path d="M2 17c4-4 8-4 12 0s8 4 12 0"></path></svg>
+                    </div>
                     <div class="card-name">Silk</div>
                     <div class="card-desc">Fluid highlights</div>
                   </div>
                   <div class="web-style-card" data-web-style="shade">
-                    <div class="card-icon">🌑</div>
+                    <div class="card-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 0 18V3z"/></svg>
+                    </div>
                     <div class="card-name">Shade</div>
                     <div class="card-desc">Deep shadow</div>
                   </div>
                   <div class="web-style-card" data-web-style="frost">
-                    <div class="card-icon">❄️</div>
+                    <div class="card-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line></svg>
+                    </div>
                     <div class="card-name">Frost</div>
                     <div class="card-desc">Liquid glass</div>
                   </div>
@@ -347,7 +363,9 @@
             <div class="tab-pane" id="pane-support">
               <h3 class="pane-title">Support Foldy</h3>
               <div class="support-card-content">
-                <div class="support-cup-icon">☕️</div>
+                <div class="support-cup-icon">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                </div>
                 <h4>Buy Me a Coffee</h4>
                 <p>Foldy is 100% free and open-source. If you enjoy having physical fluid folds on your Mac, consider buying me a coffee on Ko-fi to support continuous updates!</p>
                 <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="kofi-submit-btn">
@@ -364,8 +382,14 @@
                 <span class="about-ver">Version 1.0 (Build 1)</span>
                 <p class="about-copy">Desktop depth & hinge kinetics for macOS</p>
                 <div class="about-badges">
-                  <span class="about-pill">🔒 Private by Design</span>
-                  <span class="about-pill">⚡️ Metal 3 Shaders</span>
+                  <span class="about-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <span>Private by Design</span>
+                  </span>
+                  <span class="about-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>Metal 3 Shaders</span>
+                  </span>
                 </div>
               </div>
             </div>

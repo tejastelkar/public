@@ -163,7 +163,7 @@ if (testToneBtn) {
       }
       isTonePlaying = true;
       testToneBtn.classList.add("playing");
-      toneIcon.textContent = "◼";
+      toneIcon.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"></rect></svg>`;
       toneText.textContent = "Playing Chime...";
 
       // Create a smooth stereo chord
@@ -189,7 +189,7 @@ if (testToneBtn) {
       setTimeout(() => {
         isTonePlaying = false;
         testToneBtn.classList.remove("playing");
-        toneIcon.textContent = "▶";
+        toneIcon.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
         toneText.textContent = "Play Test Tone";
       }, 1600);
     } catch (e) {

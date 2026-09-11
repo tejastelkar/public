@@ -913,7 +913,14 @@ body {
 }
 
 .editorial-icon {
-  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--surface-alt);
+  color: var(--accent);
   margin-bottom: 12px;
 }
 

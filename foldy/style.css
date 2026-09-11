@@ -674,7 +674,13 @@ h1 {
   gap: 1.1cqw;
 }
 .apple-logo {
+  display: inline-flex;
+  align-items: center;
   font-size: 1.1cqw;
+}
+.apple-logo svg {
+  width: 1.1cqw;
+  height: 1.1cqw;
 }
 .active-app {
   font-weight: 600;
@@ -898,6 +904,11 @@ h1 {
   color: #ffffff;
 }
 .sidebar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
   font-size: 13px;
 }
 
@@ -961,7 +972,14 @@ h1 {
   box-shadow: 0 0 0 1px var(--accent);
   background: rgba(0, 113, 227, 0.02);
 }
-.card-icon { font-size: 18px; margin-bottom: 4px; }
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
 .card-name { font-size: 13px; font-weight: 600; }
 .card-desc { font-size: 11px; color: var(--muted); }
 
@@ -1043,7 +1061,10 @@ h1 {
   padding: 24px 16px;
 }
 .support-cup-icon {
-  font-size: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff9500;
   margin-bottom: 8px;
 }
 .support-card-content h4 {
@@ -1100,6 +1121,9 @@ h1 {
   gap: 8px;
 }
 .about-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 12px;
   padding: 3px 10px;
   border-radius: 999px;
