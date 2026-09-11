@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DuoSound: Dual Multi-Device Audio Routing for Mac</title>
+  <meta name="description" content="A native macOS menu bar utility that lets you play audio across two or more output devices simultaneously with one click. Zero drivers, zero kernel extensions. Free and open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DuoSound">
+  <meta property="og:title" content="DuoSound: Dual Multi-Device Audio Routing for Mac">
+  <meta property="og:description" content="Play audio through two or more output devices simultaneously with one click. Zero external drivers, pure CoreAudio HAL.">
+  <meta property="og:image" content="/assets/duosound-logo.png">
+  <link rel="icon" href="/assets/duosound-logo.png" type="image/png">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+</head>
+<body>
+  <!-- Presence Counter Pill -->
+  <aside class="presence-counter" id="presenceCounter" title="Live active visitors">
+    <span class="counter-content counter-live">
+      <span class="live-dot"></span>
+      <strong id="onlineCount">14</strong>
+      <span class="presence-label">users online live</span>
+    </span>
+    <span class="counter-content counter-info" id="presenceHint">
+      Real-time active visitors browsing DuoSound
+    </span>
+  </aside>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <a class="pill back-pill" href="/" title="Back to All Apps">
+        <span>← Apps by Tejas Telkar</span>
+      </a>
+      <a class="wordmark" href="/duosound/">
+        <img src="/assets/duosound-logo.png" alt="DuoSound Logo" class="app-logo" width="28" height="28">
+        <span class="brand-name">DuoSound</span>
+      </a>
+      <span class="badge os">macOS 13+</span>
+      <a class="pill" href="https://github.com/tejastelkar/duosound" target="_blank" rel="noopener">
+        <span>github.com/tejastelkar/duosound</span>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 6h7M6.5 3 9.5 6l-3 3"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- Hero Section -->
+    <section class="intro">
+      <div class="pill-kicker">
+        <span class="kicker-dot"></span> Native CoreAudio HAL : Zero Drivers
+      </div>
+      <h1>Play audio through two outputs at the same time.</h1>
+      <p class="lede">
+        A native macOS menu bar app that lets you stream audio across two or more output devices simultaneously with one click. Share a movie with two pairs of AirPods, play through speakers and headphones in sync, or stream without third-party audio drivers.
+      </p>
+    </section>
+
+    <!-- CTAs & Install -->
+    <div class="actions">
+      <div class="purchase-row">
+        <a class="button primary" id="downloadBtn" href="/assets/DuoSound-1.0.dmg" download="DuoSound-1.0.dmg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.08 1.73-.95 2.76 1.01.08 2.05-.51 2.68-1.26z"/></svg>
+          <span>Download DuoSound</span>
+          <span class="amount">v1.0 : 2.1 MB : Free</span>
+        </a>
+        <span class="purchase-plus" aria-hidden="true">+</span>
+        <div class="brew-box" id="brewBox" title="Click to copy Homebrew install command">
+          <code id="brewCmd">brew install --cask duosound</code>
+          <button class="copy-btn" id="copyBrewBtn" aria-label="Copy command">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyText">Copy</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Audio Simulator -->
+    <figure class="figure">
+      <div class="simulator-card">
+        <div class="sim-header">
+          <div class="sim-title-group">
+            <span class="mac-status-icon">🎧</span>
+            <div>
+              <h3>Interactive Multi-Output Simulator</h3>
+              <p>Test device selection, live waveforms, and audio routing right in your browser</p>
+            </div>
+          </div>
+          <div class="sim-actions">
+            <button class="test-tone-btn" id="testToneBtn">
+              <span id="toneIcon">▶</span>
+              <span id="toneText">Play Test Tone</span>
+            </button>
+            <span class="hotkey-pill" title="Global Hotkey">⌥⌘D</span>
+          </div>
+        </div>
+
+        <!-- Popover UI mockup -->
+        <div class="mixer-board">
+          <div class="mixer-top">
+            <span class="mixer-label">CONNECTED AUDIO OUTPUTS (SELECT 2 OR MORE)</span>
+            <span class="active-badge" id="activeRoutingBadge">Multi-Output: Active</span>
+          </div>
+
+          <!-- Device Row 1 -->
+          <div class="device-row active" id="devRow1">
+            <label class="device-checkbox-wrap">
+              <input type="checkbox" checked id="devCheck1">
+              <span class="custom-check"></span>
+              <div class="device-info">
+                <div class="device-name-line">
+                  <strong>MacBook Pro Speakers</strong>
+                  <span class="transport-tag">Built-in</span>
+                </div>
+                <span class="device-sample-rate">48,000 Hz : 2 Channels 24-bit</span>
+              </div>
+            </label>
+            <div class="device-controls">
+              <div class="visualizer-bars">
+                <span class="vbar"></span><span class="vbar"></span><span class="vbar"></span><span class="vbar"></span>
+              </div>
+              <input type="range" min="0" max="100" value="85" class="volume-slider" id="vol1">
+              <span class="vol-label" id="volVal1">85%</span>
+            </div>
+          </div>
+
+          <!-- Device Row 2 -->
+          <div class="device-row active" id="devRow2">
+            <label class="device-checkbox-wrap">
+              <input type="checkbox" checked id="devCheck2">
+              <span class="custom-check"></span>
+              <div class="device-info">
+                <div class="device-name-line">
+                  <strong>AirPods Pro</strong>
+                  <span class="transport-tag bluetooth">Bluetooth 5.3</span>
+                </div>
+                <span class="device-sample-rate">48,000 Hz : Active Drift Compensation</span>
+              </div>
+            </label>
+            <div class="device-controls">
+              <div class="visualizer-bars">
+                <span class="vbar"></span><span class="vbar"></span><span class="vbar"></span><span class="vbar"></span>
+              </div>
+              <input type="range" min="0" max="100" value="92" class="volume-slider" id="vol2">
+              <span class="vol-label" id="volVal2">92%</span>
+            </div>
+          </div>
+
+          <!-- Device Row 3 -->
+          <div class="device-row" id="devRow3">
+            <label class="device-checkbox-wrap">
+              <input type="checkbox" id="devCheck3">
+              <span class="custom-check"></span>
+              <div class="device-info">
+                <div class="device-name-line">
+                  <strong>Studio Display Audio</strong>
+                  <span class="transport-tag usb">Thunderbolt</span>
+                </div>
+                <span class="device-sample-rate">96,000 Hz : 6-Speaker System</span>
+              </div>
+            </label>
+            <div class="device-controls">
+              <div class="visualizer-bars inactive">
+                <span class="vbar"></span><span class="vbar"></span><span class="vbar"></span><span class="vbar"></span>
+              </div>
+              <input type="range" min="0" max="100" value="70" class="volume-slider" id="vol3" disabled>
+              <span class="vol-label" id="volVal3">70%</span>
+            </div>
+          </div>
+
+          <!-- Mixer Footer -->
+          <div class="mixer-footer">
+            <div class="mixer-footer-left">
+              <span class="drift-dot"></span>
+              <span class="drift-text">CoreAudio Clock Sync: 0.12ms jitter buffer</span>
+            </div>
+            <button class="primary-toggle-btn" id="playBothBtn">
+              Play on Both
+            </button>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- Deep Technical Architecture Cards -->
+    <div class="stack">
+      <section class="card">
+        <h2>Engineering Architecture</h2>
+        <dl>
+          <div class="row">
+            <dt>Zero Audio Drivers</dt>
+            <dd>Built entirely on Apple CoreAudio HAL APIs (<code>AudioHardwareCreateAggregateDevice</code> with <code>kAudioAggregateDeviceIsStackedKey = 1</code>). No kernel extensions, no virtual soundcards, and zero third-party kext security prompts.</dd>
+          </div>
+          <div class="row">
+            <dt>Hardware Drift Compensation</dt>
+            <dd>Automatically enables CoreAudio hardware drift correction when pairing Bluetooth headsets with wired or built-in speakers, preventing audio desynchronization over long sessions.</dd>
+          </div>
+          <div class="row">
+            <dt>Independent Volume Sliders</dt>
+            <dd>Controls the gain of each audio device in the multi-output mix independently, letting you balance headphones against loud room speakers seamlessly.</dd>
+          </div>
+          <div class="row">
+            <dt>Global Hotkey Toggle</dt>
+            <dd>Press <code>⌥⌘D</code> anywhere in macOS to toggle multi-output mode without opening the menu bar extra.</dd>
+          </div>
+          <div class="row">
+            <dt>Instant Disconnect Recovery</dt>
+            <dd>If AirPods go into the case or a monitor disconnects, DuoSound instantly restores your previous default audio output and destroys the aggregate device without dropped samples.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- App Specifications -->
+      <section class="card specs-card">
+        <h2>Technical Specifications</h2>
+        <div class="specs-grid">
+          <div class="spec-col">
+            <span class="spec-label">SYSTEM REQUIREMENTS</span>
+            <span class="spec-val">macOS 13.0 Ventura or later (Sonoma, Sequoia)</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">ARCHITECTURE</span>
+            <span class="spec-val">Universal Binary (Apple Silicon &amp; Intel)</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">APP SIZE</span>
+            <span class="spec-val">2.1 MB DMG (Zero dependencies)</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">MEMORY FOOTPRINT</span>
+            <span class="spec-val">Under 12 MB RAM, less than 0.1% CPU</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">LICENSE</span>
+            <span class="spec-val">MIT Free &amp; Open Source</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">SOURCE CODE</span>
+            <span class="spec-val"><a href="https://github.com/tejastelkar/duosound" target="_blank" rel="noopener">github.com/tejastelkar/duosound</a></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Developer -->
+      <section class="card developer-card">
+        <div class="dev-flex">
+          <img src="/assets/tejas.png" alt="Tejas Telkar" class="dev-avatar" width="64" height="64">
+          <div class="dev-text">
+            <h3>Crafted by Tejas Telkar</h3>
+            <p>Software and AI systems engineer from Pune, India. Designing tactile, fast, and private native macOS utilities with Apple platform purity.</p>
+            <div class="dev-links">
+              <a href="/" class="dev-link">← All Open Source Apps</a>
+              <a href="https://github.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">GitHub Profile</a>
+              <a href="https://x.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">@tejastelkar</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="footer-left">
+          <span>(c) <span id="year"></span> Tejas Telkar. Open source software with craftsmanship.</span>
+        </div>
+        <nav class="links">
+          <a href="/">All Apps</a>
+          <a href="/foldy/">Foldy</a>
+          <a href="https://github.com/tejastelkar/duosound" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener">Ko-fi</a>
+        </nav>
+      </footer>
+    </div>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

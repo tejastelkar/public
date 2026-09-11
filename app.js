@@ -1,5 +1,5 @@
 /**
- * Tejas Telkar — Open Source Hub & Projects Showcase
+ * Tejas Telkar  :  Open Source Hub & Projects Showcase
  * Client-side script: Real-time Live Presence Engine & Interactions
  */
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Tejas Telkar — Open Source Mac Apps & AI Systems
+   Tejas Telkar  :  Open Source Mac Apps & AI Systems
    Mac App Store Editorial Aesthetic · Pure White Canvas
    ========================================================================== */
 
@@ -1082,4 +1082,77 @@ body {
   .appstore-info-table {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Compact App Store Shelf Card for Main Home */
+.compact-shelf-card {
+  padding: 24px;
+}
+
+.app-icon-link {
+  display: block;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.app-icon-link:hover {
+  transform: scale(1.04);
+}
+
+.app-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.app-title-link:hover .appstore-app-title {
+  color: var(--accent);
+}
+
+.app-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--surface-alt);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.appstore-short-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+  margin: 16px 0 14px;
+}
+
+.app-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 20px;
+}
+
+.app-tags-row .tag-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.primary-page-btn {
+  background: var(--ink);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.primary-page-btn:hover {
+  background: #2a2a2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
