@@ -482,32 +482,7 @@ body {
   margin: 0;
 }
 
-.appstore-pills {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface-alt);
-  padding: 4px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--line);
-}
 
-.appstore-pill {
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.18s ease;
-}
-
-.appstore-pill.active {
-  background: #ffffff;
-  color: var(--ink);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
 
 /* App Store Cards Grid */
 .appstore-grid {
