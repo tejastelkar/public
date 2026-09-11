@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SideDeck : Floating macOS Dock & Productivity Cards</title>
+  <meta name="description" content="A native macOS floating companion dock on your screen edge. Live battery and Wi-Fi hardware status, focus timer, habits matrix, fluid water reservoir, and quick notes. Free and open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SideDeck">
+  <meta property="og:title" content="SideDeck : Floating macOS Dock & Productivity Cards">
+  <meta property="og:description" content="A sleek obsidian dock living on the edge of your screen. Built with pure Swift, SwiftUI, and native macOS hardware monitoring.">
+  <meta property="og:image" content="/assets/sidedeck-icon.png">
+  <link rel="icon" href="/assets/sidedeck-icon.png" type="image/png">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <a class="wordmark" href="/">
+        <img src="/assets/atlas-mark.svg" alt="Atlas Studios" class="avatar-logo atlas-logo-mark" width="22" height="22">
+        <span class="brand-name">Atlas Studios</span>
+      </a>
+      <span class="nav-divider">/</span>
+      <a class="crumb-app" href="/sidedeck/">
+        <img src="/assets/sidedeck-icon.png" alt="SideDeck Logo" class="crumb-icon" width="22" height="22">
+        <span class="crumb-name">SideDeck</span>
+      </a>
+      <span class="badge os">macOS 14+</span>
+      <a class="pill" href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span>github.com/tejastelkar/sidedeck</span>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 6h7M6.5 3 9.5 6l-3 3"/></svg>
+      </a>
+      <a class="pill back-pill" href="/" title="Back to Homepage">
+        <span>← All Apps</span>
+      </a>
+    </div>
+
+    <!-- Live Visitors Presence Pill -->
+    <div class="topbar-actions">
+      <aside class="presence-counter" id="presenceCounter" title="Live active visitors across Tejas Telkar's open source hub">
+        <span class="counter-content counter-live">
+          <span class="live-dot"></span>
+          <strong id="onlineCount">24</strong>
+          <span class="presence-label">users online today</span>
+        </span>
+        <span class="counter-content counter-info" id="presenceHint">
+          Real-time active visitors browsing SideDeck
+        </span>
+      </aside>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- Hero Section -->
+    <section class="intro">
+      <div class="pill-kicker">
+        <span class="kicker-dot"></span> Native macOS Utility : 1:1 Sydedock Architecture
+      </div>
+      <h1>A sleek floating dock right on the edge of your screen.</h1>
+      <p class="lede">
+        SideDeck sits gracefully on your screen edge as an obsidian companion. Access a Pomodoro focus timer, live digital clock, real battery and Wi-Fi system hardware monitors, habit streaks, fluid hydration reservoir, and quick notes without opening a window or breaking focus.
+      </p>
+    </section>
+
+    <!-- CTAs & Install -->
+    <div class="actions">
+      <div class="purchase-row">
+        <a class="button primary" id="downloadBtn" href="/assets/SideDeck-1.2.0.dmg" download="SideDeck-1.2.0.dmg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.08 1.73-.95 2.76 1.01.08 2.05-.51 2.68-1.26z"/></svg>
+          <span>Download SideDeck</span>
+          <span class="amount">v1.2.0 : 2.5 MB : Free</span>
+        </a>
+        <div class="brew-box" id="brewBox" title="Click to copy Homebrew install command">
+          <code id="brewCmd">brew install --cask sidedeck</code>
+          <button class="copy-btn" id="copyBrewBtn" aria-label="Copy command">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span id="copyText">Copy</span>
+          </button>
+        </div>
+        <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="kofi-donate-btn" title="Support developer on Ko-fi">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          <span>Support on Ko-fi</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Live Interactive Preview & Simulator -->
+    <figure class="figure">
+      <div class="dock-showcase-card">
+        <div class="showcase-header">
+          <div class="showcase-title-group">
+            <img src="/assets/sidedeck-icon.png" alt="SideDeck" class="showcase-icon" width="28" height="28">
+            <div>
+              <h3>Interactive SideDeck Flyouts</h3>
+              <p>Hover or click any widget card on the right to inspect its callout beak flyout</p>
+            </div>
+          </div>
+          <div class="showcase-actions">
+            <span class="hotkey-pill" title="Toggle Dock Hotkey">⌥D</span>
+          </div>
+        </div>
+
+        <!-- Interactive Dock Stage -->
+        <div class="dock-stage" id="dockStage">
+          <!-- Active Flyout Viewport -->
+          <div class="flyout-viewport" id="flyoutViewport">
+            <!-- Active flyout content rendered dynamically by app.js -->
+            <div class="flyout-box active-flyout" id="flyoutContent">
+              <div class="flyout-header-row">
+                <span class="flyout-title">Battery &amp; Wi-Fi</span>
+                <span class="flyout-status-chip">Live Hardware</span>
+              </div>
+              <div class="battery-hero-block">
+                <div class="battery-hero-top">
+                  <strong class="battery-pct">68%</strong>
+                  <span class="battery-time">5h 43m left</span>
+                </div>
+                <div class="battery-bar-track">
+                  <div class="battery-bar-fill" style="width: 68%;"></div>
+                </div>
+              </div>
+              <div class="wifi-hero-block">
+                <div class="wifi-line">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                  <strong>Connected</strong>
+                  <span class="wifi-dbm">Signal: -65 dBm · Active</span>
+                </div>
+                <div class="wifi-chip-row">
+                  <span class="wifi-chip active">Home 5G</span>
+                  <span class="wifi-chip">Studio</span>
+                  <span class="wifi-chip">Cafe Guest</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- The Floating Dock Column -->
+          <div class="dock-column" id="dockColumn">
+            <!-- 1. Focus -->
+            <button class="card-btn" data-widget="focus">
+              <div class="card-focus-mini">
+                <div class="bolt-ring">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <span class="focus-time">04:38</span>
+                <span class="focus-title">Draw landing</span>
+              </div>
+            </button>
+
+            <!-- 2. Clock -->
+            <button class="card-btn" data-widget="clock">
+              <div class="card-clock-mini">
+                <strong class="clock-time">9:48 <small>PM</small></strong>
+                <span class="clock-date">Fri 11 Sep</span>
+              </div>
+            </button>
+
+            <!-- 3. Battery / Wi-Fi (Active by default) -->
+            <button class="card-btn active" data-widget="battery">
+              <div class="card-status-mini">
+                <div class="battery-capsule">
+                  <span class="battery-num">68%</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                </div>
+                <div class="dots-row">
+                  <span class="dot active"></span>
+                  <span class="dot active"></span>
+                  <span class="dot active"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </button>
+
+            <!-- 4. Habits -->
+            <button class="card-btn" data-widget="habits">
+              <div class="card-habits-mini">
+                <div class="habits-matrix-preview">
+                  <span class="hdot d0"></span><span class="hdot d1"></span><span class="hdot d2"></span><span class="hdot d4"></span>
+                  <span class="hdot d3"></span><span class="hdot d4"></span><span class="hdot d1"></span><span class="hdot d2"></span>
+                  <span class="hdot d0"></span><span class="hdot d3"></span><span class="hdot d4"></span><span class="hdot d4"></span>
+                </div>
+              </div>
+            </button>
+
+            <!-- 5. Hydration -->
+            <button class="card-btn" data-widget="water">
+              <div class="card-water-mini">
+                <span class="water-timer">01:38</span>
+                <div class="water-wave-tank">
+                  <div class="wave-shape"></div>
+                </div>
+              </div>
+            </button>
+
+            <!-- 6. Notes -->
+            <button class="card-btn" data-widget="notes">
+              <div class="card-notes-mini">
+                <span class="notes-tag">Notes</span>
+                <span class="note-line"> Ship update</span>
+                <span class="note-line"> Call framer</span>
+                <span class="note-line"> Rent, Friday</span>
+              </div>
+            </button>
+
+            <!-- 7. Bottom Handle -->
+            <div class="dock-handle-pill">
+              <span class="handle-bar"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- Deep Technical Architecture Cards -->
+    <div class="stack">
+      <section class="card">
+        <h2>Engineering Architecture</h2>
+        <dl>
+          <div class="row">
+            <dt>Live macOS Hardware Integration</dt>
+            <dd>Interfaces directly with macOS <code>IOKit.ps</code> (Power Sources) to query live battery percentage, AC adapter status, and calculate battery depletion curves. Connects to <code>CoreWLAN</code> to read real wireless interface power, active network SSID, and RSSI dBm signal strength.</dd>
+          </div>
+          <div class="row">
+            <dt>Spring Physics Callout Geometry</dt>
+            <dd>Every flyout popover features a mathematical callout beak shape computed in real time. The beak points precisely at the vertical center of the hovered card with zero pixel mismatch across density modes.</dd>
+          </div>
+          <div class="row">
+            <dt>Key-Capable Floating Panel</dt>
+            <dd>Subclasses <code>NSPanel</code> with <code>canBecomeKey = true</code> and custom first-responder management. You can type tasks, edit checklist items, and take quick notes directly inside floating flyouts without bringing a heavy window forward.</dd>
+          </div>
+          <div class="row">
+            <dt>Click-Through Transparency</dt>
+            <dd>Custom <code>hitTest</code> architecture passes mouse clicks through transparent bounds when idle, so underlying browser tabs, code editors, and desktop icons remain 100% interactive without phantom clicks.</dd>
+          </div>
+          <div class="row">
+            <dt>Full Persistence & Zero Telemetry</dt>
+            <dd>All tasks, habit histories, water intake, notes, and customization preferences persist safely in local macOS <code>UserDefaults</code>. Zero network requests, zero telemetry, and zero tracking.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- App Specifications -->
+      <section class="card specs-card">
+        <h2>Technical Specifications</h2>
+        <div class="specs-grid">
+          <div class="spec-col">
+            <span class="spec-label">SYSTEM REQUIREMENTS</span>
+            <span class="spec-val">macOS 14.0 Sonoma or later (macOS 15 Sequoia ready)</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">ARCHITECTURE</span>
+            <span class="spec-val">Universal Binary (Apple Silicon M1/M2/M3/M4 &amp; Intel)</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">APP SIZE</span>
+            <span class="spec-val">2.5 MB DMG (Zero dependencies)</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">MEMORY FOOTPRINT</span>
+            <span class="spec-val">~18 MB RAM, zero background CPU drain</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">FRAMEWORK</span>
+            <span class="spec-val">Pure Swift 5.10, SwiftUI, AppKit, IOKit, CoreWLAN</span>
+          </div>
+          <div class="spec-col">
+            <span class="spec-label">SOURCE CODE</span>
+            <span class="spec-val"><a href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">github.com/tejastelkar/sidedeck</a></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support Developer & Donation Card -->
+      <section class="card support-card">
+        <div class="support-flex">
+          <div class="support-icon-box">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          </div>
+          <div class="support-text">
+            <h3>Support Independent Mac Craftsmanship</h3>
+            <p>SideDeck is 100% free and open-source. If you enjoy having physical fluid cards and live hardware monitoring on your Mac desktop, consider buying me a coffee on Ko-fi to fund continuous updates, new widgets, and performance tuning!</p>
+            <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="kofi-submit-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+              <span>Support on Ko-fi (ko-fi.com/tejastelkar)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Developer -->
+      <section class="card developer-card">
+        <div class="dev-flex">
+          <img src="/assets/tejas.png" alt="Tejas Telkar" class="dev-avatar" width="64" height="64">
+          <div class="dev-text">
+            <h3>Crafted by Tejas Telkar</h3>
+            <p>Software and AI systems engineer based in Pune, India. Designing tactile, fast, and private native macOS utilities with Apple platform purity.</p>
+            <div class="dev-links">
+              <a href="/" class="dev-link">← All Open Source Apps</a>
+              <a href="https://github.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">GitHub Profile</a>
+              <a href="https://x.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">@tejastelkar</a>
+              <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">Ko-fi Sponsor</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <div class="footer-left">
+          <span>(c) <span id="year"></span> SideDeck by Atlas Studios. Handcrafted by <a href="https://github.com/tejastelkar" target="_blank" rel="noopener">Tejas Telkar</a>.</span>
+        </div>
+        <nav class="links">
+          <a href="/">All Apps</a>
+          <a href="/foldy/">Foldy</a>
+          <a href="/duosound/">DuoSound</a>
+          <a href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener">Ko-fi</a>
+        </nav>
+      </footer>
+    </div>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
