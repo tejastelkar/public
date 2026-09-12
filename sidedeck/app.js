@@ -1,242 +1,527 @@
-/**
- * SideDeck Landing Page Application
- * Smooth scrolling, Homebrew copy interaction, and Live Dock Flyout Switcher
- */
+/* SideDeck Interactive Client Runtime
+   Full 1:1 Sydedock Architecture, Live Hardware Simulation & Dynamic Flyout Engine
+   Handcrafted for Tejas Telkar
+*/
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize Lenis Smooth Scrolling if available
+(function() {
+  'use strict';
+
+  // --- 1. Lenis Smooth Scroll ---
   if (typeof Lenis !== 'undefined') {
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-    function raf(time) {
-      lenis.raf(time);
+    try {
+      const lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
       requestAnimationFrame(raf);
+    } catch (e) {
+      console.warn('Lenis init failed:', e);
     }
-    requestAnimationFrame(raf);
   }
 
-  // 2. Dynamic Year
-  const yearEl = document.getElementById('year');
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
+  // --- 2. State & References ---
+  const state = {
+    scrollCard: null,
+    activeCard: null,
+    lockedCard: null,
+    clockFormat: 'system', // 'system', '12', '24'
+    showSeconds: true,
+    showDate: true,
+    timerTotal: 25 * 60,
+    timerRemaining: 24 * 60 + 38,
+    timerRunning: true,
+    waterTimerRemaining: 14 * 60 + 22,
+    waterGlasses: 4,
+    waterInterval: 45,
+    habitsLogged: 4,
+  };
+
+  const cards = ['focus', 'clock', 'status', 'habits', 'hydration', 'notes'];
+  const cardWraps = document.querySelectorAll('.dock .card-wrap');
+  const allFlyouts = document.querySelectorAll('.dock .flyout, #flyout-settings');
+  const mainDock = document.getElementById('mainDock');
+
+  // --- 3. Flyout Manager ---
+  function setActiveCard(cardKey, isManual = false) {
+    if (isManual) {
+      state.activeCard = cardKey;
+    } else {
+      state.scrollCard = cardKey;
+      state.activeCard = cardKey;
+      state.lockedCard = null; // scroll overrides lock
+    }
+
+    // Update dock dimming (data-lit)
+    cardWraps.forEach(wrap => {
+      const key = wrap.getAttribute('data-card-key');
+      if (!state.activeCard || state.activeCard === 'hero') {
+        wrap.setAttribute('data-lit', 'true');
+      } else if (key === state.activeCard) {
+        wrap.setAttribute('data-lit', 'true');
+      } else {
+        wrap.setAttribute('data-lit', 'false');
+      }
+    });
+
+    // Toggle Flyouts
+    allFlyouts.forEach(flyout => {
+      flyout.style.display = 'none';
+    });
+
+    if (state.activeCard && state.activeCard !== 'hero') {
+      const targetFlyout = document.getElementById(`flyout-${state.activeCard}`);
+      if (targetFlyout) {
+        targetFlyout.style.display = 'flex';
+      }
+    }
   }
 
-  // 3. Homebrew Command Copy Interaction
-  const brewBox = document.getElementById('brewBox');
-  const copyBrewBtn = document.getElementById('copyBrewBtn');
-  const copyText = document.getElementById('copyText');
-  const brewCmd = document.getElementById('brewCmd');
+  // Bind mouse hover & click on dock card-wraps
+  cardWraps.forEach(wrap => {
+    const key = wrap.getAttribute('data-card-key');
+    if (!key) return;
 
-  function copyCommand() {
-    const cmd = brewCmd.textContent.trim();
-    navigator.clipboard.writeText(cmd).then(() => {
-      copyText.textContent = 'Copied!';
-      brewBox.style.borderColor = '#0071e3';
-      setTimeout(() => {
-        copyText.textContent = 'Copy';
-        brewBox.style.borderColor = '';
-      }, 2000);
-    }).catch(() => {
-      copyText.textContent = 'Copied!';
-      setTimeout(() => { copyText.textContent = 'Copy'; }, 2000);
+    wrap.addEventListener('mouseenter', () => {
+      setActiveCard(key, true);
+    });
+
+    wrap.addEventListener('click', (e) => {
+      e.stopPropagation();
+      state.lockedCard = (state.lockedCard === key) ? null : key;
+      setActiveCard(state.lockedCard || key, true);
+    });
+  });
+
+  // When mouse leaves the dock, revert to currently scrolled feature section
+  if (mainDock) {
+    mainDock.addEventListener('mouseleave', () => {
+      if (!state.lockedCard) {
+        setActiveCard(state.scrollCard, false);
+      }
     });
   }
 
-  if (brewBox) brewBox.addEventListener('click', copyCommand);
-  if (copyBrewBtn) copyBrewBtn.addEventListener('click', (e) => { e.stopPropagation(); copyCommand(); });
+  // Settings Handle Click
+  window.toggleSettingsFlyout = function() {
+    const settingsFlyout = document.getElementById('flyout-settings');
+    if (!settingsFlyout) return;
 
-  // 4. Presence Counter Randomizer
-  const onlineCount = document.getElementById('onlineCount');
-  if (onlineCount) {
-    let current = 24;
-    setInterval(() => {
-      const delta = Math.floor(Math.random() * 3) - 1; // -1, 0, 1
-      current = Math.max(16, Math.min(36, current + delta));
-      onlineCount.textContent = current;
-    }, 6000);
-  }
+    const isOpen = settingsFlyout.style.display === 'flex';
+    allFlyouts.forEach(f => f.style.display = 'none');
+    cardWraps.forEach(w => w.setAttribute('data-lit', isOpen ? 'true' : 'false'));
 
-  // 5. Interactive Dock Flyout Simulator
-  const cardBtns = document.querySelectorAll('.card-btn');
-  const flyoutBox = document.getElementById('flyoutContent');
-
-  const flyoutTemplates = {
-    focus: {
-      title: "Focus Tasks",
-      badge: "Pomodoro 25:00",
-      beakTop: "12%",
-      html: `
-        <div class="flyout-header-row">
-          <span class="flyout-title">Tasks · 2 to go</span>
-          <span class="flyout-status-chip">Focus 25:00</span>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-          <div style="display:flex; align-items:center; gap:8px; padding:8px 10px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12.5px;">
-            <input type="checkbox" checked style="accent-color:#0068fe;">
-            <span style="text-decoration:line-through; color:#8e8e93;">Draw the new landing page</span>
-            <span style="margin-left:auto; font-size:10px; font-family:monospace; color:#8e8e93;">25:00</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; padding:8px 10px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12.5px;">
-            <input type="checkbox" style="accent-color:#0068fe;">
-            <span>Reply to the framer</span>
-            <span style="margin-left:auto; font-size:10px; font-family:monospace; color:#8e8e93;">10:00</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; padding:8px 10px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12.5px;">
-            <input type="checkbox" style="accent-color:#0068fe;">
-            <span>Send the invoice</span>
-            <span style="margin-left:auto; font-size:10px; font-family:monospace; color:#8e8e93;">05:00</span>
-          </div>
-        </div>
-        <div style="display:flex; gap:6px;">
-          <input type="text" placeholder="Add a task..." style="flex:1; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:6px 10px; color:#fff; font-size:12px;" disabled value="Draft launch tweet">
-          <button style="background:#0068fe; color:#fff; border:none; border-radius:8px; width:28px; height:28px; cursor:pointer;">+</button>
-        </div>
-      `
-    },
-    clock: {
-      title: "Digital Clock",
-      badge: "System Sync",
-      beakTop: "27%",
-      html: `
-        <div class="flyout-header-row">
-          <span class="flyout-title">Digital Clock</span>
-          <span class="flyout-status-chip">Week 37</span>
-        </div>
-        <div style="text-align:center; padding:16px 0; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:12px;">
-          <div style="font-size:32px; font-weight:800; font-family:monospace; letter-spacing:-1px;">9:48:42 <small style="font-size:14px; color:#8e8e93;">PM</small></div>
-          <div style="font-size:13px; color:#a1a1a6; margin-top:4px;">Friday, 11 September 2026</div>
-        </div>
-        <div style="display:flex; gap:6px; font-size:11.5px;">
-          <span style="flex:1; text-align:center; padding:6px; border-radius:6px; background:rgba(0,113,227,0.25); color:#2997ff; font-weight:600;">System</span>
-          <span style="flex:1; text-align:center; padding:6px; border-radius:6px; background:rgba(255,255,255,0.06); color:#a1a1a6;">12-hour</span>
-          <span style="flex:1; text-align:center; padding:6px; border-radius:6px; background:rgba(255,255,255,0.06); color:#a1a1a6;">24-hour</span>
-        </div>
-      `
-    },
-    battery: {
-      title: "Battery & Wi-Fi",
-      badge: "Live Hardware",
-      beakTop: "42%",
-      html: `
-        <div class="flyout-header-row">
-          <span class="flyout-title">Battery &amp; Wi-Fi</span>
-          <span class="flyout-status-chip">Live Hardware</span>
-        </div>
-        <div class="battery-hero-block">
-          <div class="battery-hero-top">
-            <strong class="battery-pct">68%</strong>
-            <span class="battery-time">5h 43m left</span>
-          </div>
-          <div class="battery-bar-track">
-            <div class="battery-bar-fill" style="width: 68%;"></div>
-          </div>
-        </div>
-        <div class="wifi-hero-block">
-          <div class="wifi-line">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-            <strong>Connected</strong>
-            <span class="wifi-dbm">Signal: -65 dBm · Active</span>
-          </div>
-          <div class="wifi-chip-row">
-            <span class="wifi-chip active">Home 5G</span>
-            <span class="wifi-chip">Studio</span>
-            <span class="wifi-chip">Cafe Guest</span>
-          </div>
-        </div>
-      `
-    },
-    habits: {
-      title: "Habit Tracker",
-      badge: "6 Day Streak",
-      beakTop: "58%",
-      html: `
-        <div class="flyout-header-row">
-          <span class="flyout-title">Habits · 6 day streak</span>
-          <span class="flyout-status-chip" style="color:#00e1ff; background:rgba(0,225,255,0.15);">Today 4</span>
-        </div>
-        <div style="padding:12px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:12px;">
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#8e8e93; margin-bottom:8px;">
-            <span>36-day visual consistency</span>
-            <span>Less ···· More</span>
-          </div>
-          <div style="display:grid; grid-template-columns:repeat(12, 1fr); gap:4px;">
-            ${Array.from({length: 36}, (_, i) => `<div style="height:14px; border-radius:3px; background:${['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.25)', '#8e8e93', '#c7c7cc', '#ffffff'][i % 5]};"></div>`).join('')}
-          </div>
-        </div>
-        <button style="width:100%; padding:8px; border-radius:8px; background:#0068fe; color:#fff; border:none; font-weight:600; font-size:12.5px; cursor:pointer;">Check in Today (+1)</button>
-      `
-    },
-    water: {
-      title: "Hydration",
-      badge: "4 of 8 Today",
-      beakTop: "72%",
-      html: `
-        <div class="flyout-header-row">
-          <span class="flyout-title">Hydration · 4 glasses</span>
-          <span class="flyout-status-chip" style="color:#00e1ff; background:rgba(0,225,255,0.15);">1,000 / 2,000 ml</span>
-        </div>
-        <div style="padding:14px; background:rgba(0,225,255,0.06); border:1px solid rgba(0,225,255,0.2); border-radius:12px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between;">
-          <div>
-            <div style="font-size:24px; font-weight:800; font-family:monospace; color:#00e1ff;">01:38</div>
-            <div style="font-size:11.5px; color:#8e8e93;">Next reminder in 1 hour 38m</div>
-          </div>
-          <button style="padding:8px 14px; border-radius:8px; background:#0068fe; color:#fff; border:none; font-weight:600; font-size:12px; cursor:pointer;">+250 ml</button>
-        </div>
-        <div style="display:flex; justify-content:space-between; font-size:11px; color:#8e8e93;">
-          <span>Streak: 7 days</span>
-          <span>Avg: 4.6 / day</span>
-          <span>Best: 8</span>
-        </div>
-      `
-    },
-    notes: {
-      title: "Quick Notes",
-      badge: "3 Saved",
-      beakTop: "88%",
-      html: `
-        <div class="flyout-header-row">
-          <span class="flyout-title">Scratchpad Notes</span>
-          <span class="flyout-status-chip">3 Active</span>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
-          <div style="display:flex; align-items:center; gap:8px; padding:7px 10px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12px;">
-            <input type="checkbox" style="accent-color:#0068fe;">
-            <span>Ship the update</span>
-            <span style="margin-left:auto; font-size:10px; color:#8e8e93;">2m ago</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; padding:7px 10px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12px;">
-            <input type="checkbox" style="accent-color:#0068fe;">
-            <span>Call the framer back</span>
-            <span style="margin-left:auto; font-size:10px; color:#8e8e93;">1h ago</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; padding:7px 10px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12px;">
-            <input type="checkbox" style="accent-color:#0068fe;">
-            <span>Rent, Friday</span>
-            <span style="margin-left:auto; font-size:10px; color:#8e8e93;">yesterday</span>
-          </div>
-        </div>
-        <input type="text" placeholder="Jot something down..." style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:6px 10px; color:#fff; font-size:12px;" disabled value="Meeting at 4pm">
-      `
+    if (!isOpen) {
+      settingsFlyout.style.display = 'flex';
+      state.lockedCard = 'settings';
+      state.activeCard = 'settings';
+    } else {
+      state.lockedCard = null;
+      setActiveCard(state.scrollCard, false);
     }
   };
 
-  cardBtns.forEach((btn) => {
-    const activateCard = () => {
-      const widget = btn.getAttribute('data-widget');
-      if (!widget || !flyoutTemplates[widget]) return;
-
-      cardBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const data = flyoutTemplates[widget];
-      flyoutBox.style.setProperty('--beak-top', data.beakTop);
-      flyoutBox.innerHTML = data.html;
-    };
-
-    btn.addEventListener('mouseenter', activateCard);
-    btn.addEventListener('click', activateCard);
+  // Close flyouts on outer click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dock-stack') && !e.target.closest('.flyout')) {
+      state.lockedCard = null;
+      setActiveCard(state.scrollCard, false);
+    }
   });
-});
+
+  // --- 4. Scroll-Driven Intersection Observer ---
+  const sections = document.querySelectorAll('section[data-card], section#hero');
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -25% 0px',
+    threshold: 0.2,
+  };
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const cardKey = entry.target.getAttribute('data-card') || 'hero';
+        setActiveCard(cardKey === 'hero' ? null : cardKey, false);
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach(sec => sectionObserver.observe(sec));
+
+  // --- 5. Live Digital Clock Engine ---
+  const dockClockTime = document.getElementById('dockClockTime');
+  const dockClockDate = document.getElementById('dockClockDate');
+  const flyoutClockBig = document.getElementById('flyoutClockBig');
+  const flyoutClockSec = document.getElementById('flyoutClockSeconds');
+  const flyoutClockPeriod = document.getElementById('flyoutClockPeriod');
+  const flyoutClockFullDate = document.getElementById('flyoutClockFullDate');
+
+  const analogHourHand = document.getElementById('analogHourHand');
+  const analogMinuteHand = document.getElementById('analogMinuteHand');
+  const analogSecondHand = document.getElementById('analogSecondHand');
+
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const fullMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const fullDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  function updateLiveClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const day = now.getDate();
+    const dayOfWeek = now.getDay();
+    const month = now.getMonth();
+
+    const pad = (n) => String(n).padStart(2, '0');
+    let displayHours = hours;
+    let period = hours >= 12 ? 'PM' : 'AM';
+
+    if (state.clockFormat === '12') {
+      displayHours = hours % 12 || 12;
+    } else if (state.clockFormat === '24') {
+      period = '';
+    } else {
+      // system default: 12-hour with period
+      displayHours = hours % 12 || 12;
+    }
+
+    const timeString = `${displayHours}:${pad(minutes)}`;
+    const secString = `:${pad(seconds)}`;
+    const dateShort = `${dayNames[dayOfWeek]}, ${monthNames[month]} ${day}`;
+    const dateFull = `${fullDays[dayOfWeek]}, ${fullMonths[month]} ${day}`;
+
+    // Update Dock Clock
+    if (dockClockTime) {
+      if (state.showSeconds) {
+        dockClockTime.innerHTML = `${displayHours}<span style="color:var(--colon)">:</span>${pad(minutes)}<span style="font-size:0.55em;opacity:0.65;margin-left:2px">${pad(seconds)}</span>`;
+      } else {
+        dockClockTime.innerHTML = `${displayHours}<span style="color:var(--colon)">:</span>${pad(minutes)}`;
+      }
+    }
+
+    if (dockClockDate) {
+      dockClockDate.style.display = state.showDate ? 'block' : 'none';
+      dockClockDate.textContent = dateShort;
+    }
+
+    // Update Clock Flyout
+    if (flyoutClockBig) flyoutClockBig.textContent = timeString;
+    if (flyoutClockSec) flyoutClockSec.textContent = secString;
+    if (flyoutClockPeriod) flyoutClockPeriod.textContent = period;
+    if (flyoutClockFullDate) flyoutClockFullDate.textContent = dateFull;
+
+    // Update Gallery Analog Dial Hands
+    if (analogHourHand && analogMinuteHand && analogSecondHand) {
+      const hDeg = (hours % 12 + minutes / 60) * 30;
+      const mDeg = (minutes + seconds / 60) * 6;
+      const sDeg = seconds * 6;
+      analogHourHand.setAttribute('transform', `rotate(${hDeg} 50 50)`);
+      analogMinuteHand.setAttribute('transform', `rotate(${mDeg} 50 50)`);
+      analogSecondHand.setAttribute('transform', `rotate(${sDeg} 50 50)`);
+    }
+  }
+
+  setInterval(updateLiveClock, 1000);
+  updateLiveClock();
+
+  window.setClockFormat = function(fmt) {
+    state.clockFormat = fmt;
+    document.querySelectorAll('.flyout-capsule button').forEach(b => b.classList.remove('is-on'));
+    const btn = document.getElementById(fmt === 'system' ? 'fmtSystem' : fmt === '12' ? 'fmt12' : 'fmt24');
+    if (btn) btn.classList.add('is-on');
+    updateLiveClock();
+  };
+
+  window.toggleClockSeconds = function() {
+    state.showSeconds = !state.showSeconds;
+    const btn = document.getElementById('toggleSeconds');
+    if (btn) btn.classList.toggle('is-on', state.showSeconds);
+    updateLiveClock();
+  };
+
+  window.toggleClockDate = function() {
+    state.showDate = !state.showDate;
+    const btn = document.getElementById('toggleDate');
+    if (btn) btn.classList.toggle('is-on', state.showDate);
+    updateLiveClock();
+  };
+
+  // --- 6. Focus Pomodoro Bolt Timer Engine ---
+  const focusMinEl = document.getElementById('focusMinutes');
+  const focusSecEl = document.getElementById('focusSeconds');
+  const boltProgressPath = document.getElementById('boltProgressPath');
+
+  function updateFocusTimer() {
+    if (!state.timerRunning) return;
+    if (state.timerRemaining > 0) {
+      state.timerRemaining--;
+    } else {
+      state.timerRemaining = state.timerTotal;
+    }
+
+    const mins = Math.floor(state.timerRemaining / 60);
+    const secs = state.timerRemaining % 60;
+    const pad = (n) => String(n).padStart(2, '0');
+
+    if (focusMinEl) focusMinEl.textContent = pad(mins);
+    if (focusSecEl) focusSecEl.textContent = pad(secs);
+
+    if (boltProgressPath) {
+      const progress = 1 - (state.timerRemaining / state.timerTotal);
+      const totalDash = 494;
+      const offset = totalDash * (1 - progress);
+      boltProgressPath.style.strokeDashoffset = String(offset);
+    }
+  }
+
+  setInterval(updateFocusTimer, 1000);
+
+  // --- 7. Hydration Water Reservoir & Physics Slosh ---
+  const dockWaterTimer = document.getElementById('dockWaterTimer');
+  const flyoutWaterNext = document.getElementById('flyoutWaterNextTimer');
+  const flyoutWaterToday = document.getElementById('flyoutWaterToday');
+  const waterSheenPath = document.getElementById('waterSheenPath');
+  const waterBodyPath = document.getElementById('waterBodyPath');
+
+  let waveStep = 0;
+  function animateWaterWave() {
+    waveStep += 0.04;
+    const h1 = 16 + Math.sin(waveStep) * 4;
+    const h2 = 22 + Math.cos(waveStep * 0.8) * 3;
+    const mid1 = 8 + Math.cos(waveStep) * 4;
+    const mid2 = 18 + Math.sin(waveStep * 0.9) * 3;
+
+    if (waterSheenPath) {
+      waterSheenPath.setAttribute('d', `M 0 117 L 0 ${h1} Q 41 ${mid1} 83 ${h1 - 4} Q 125 ${mid1 + 6} 166 ${h1} L 166 117 Z`);
+    }
+    if (waterBodyPath) {
+      waterBodyPath.setAttribute('d', `M 0 117 L 0 ${h2} Q 41 ${mid2} 83 ${h2 - 3} Q 125 ${mid2 + 5} 166 ${h2} L 166 117 Z`);
+    }
+    requestAnimationFrame(animateWaterWave);
+  }
+  requestAnimationFrame(animateWaterWave);
+
+  function updateWaterTimer() {
+    if (state.waterTimerRemaining > 0) {
+      state.waterTimerRemaining--;
+    } else {
+      state.waterTimerRemaining = state.waterInterval * 60;
+    }
+    const mins = Math.floor(state.waterTimerRemaining / 60);
+    const secs = state.waterTimerRemaining % 60;
+    const pad = (n) => String(n).padStart(2, '0');
+    const str = `${pad(mins)}:${pad(secs)}`;
+
+    if (dockWaterTimer) dockWaterTimer.textContent = str;
+    if (flyoutWaterNext) flyoutWaterNext.textContent = str;
+  }
+  setInterval(updateWaterTimer, 1000);
+
+  window.drinkWaterGlass = function() {
+    state.waterGlasses++;
+    state.waterTimerRemaining = state.waterInterval * 60;
+    if (flyoutWaterToday) flyoutWaterToday.textContent = `${state.waterGlasses} glasses today`;
+
+    // Splash animation
+    if (waterBodyPath) {
+      waterBodyPath.style.transition = 'transform 0.3s cubic-bezier(0.2, 1.4, 0.4, 1)';
+      waterBodyPath.style.transform = 'scaleY(1.15)';
+      setTimeout(() => {
+        waterBodyPath.style.transform = 'scaleY(1)';
+      }, 350);
+    }
+  };
+
+  window.adjustInterval = function(delta) {
+    state.waterInterval = Math.max(15, Math.min(120, state.waterInterval + delta));
+    const el = document.getElementById('intervalValue');
+    if (el) el.textContent = `${state.waterInterval} min`;
+  };
+
+  // --- 8. Habit Matrix 36-Dot Grid Generator ---
+  function buildHabitGrid(containerId) {
+    const grid = document.getElementById(containerId);
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const opacities = [
+      '#a1a1a1', 'rgba(255,255,255,0.75)', 'rgba(161,161,161,0.5)', '#ffffff',
+      '#a1a1a1', 'empty', 'rgba(161,161,161,0.5)', 'rgba(255,255,255,0.75)',
+      '#ffffff', '#a1a1a1', 'rgba(255,255,255,0.75)', 'rgba(161,161,161,0.5)',
+      'empty', '#a1a1a1', '#ffffff', 'rgba(255,255,255,0.75)',
+      '#a1a1a1', '#ffffff', 'rgba(161,161,161,0.5)', 'empty',
+      'rgba(255,255,255,0.75)', '#ffffff', '#a1a1a1', 'rgba(255,255,255,0.75)',
+      'rgba(161,161,161,0.5)', '#a1a1a1', '#ffffff', 'rgba(255,255,255,0.75)',
+      'empty', '#a1a1a1', 'rgba(255,255,255,0.75)', '#ffffff',
+      '#a1a1a1', 'rgba(161,161,161,0.5)', 'rgba(255,255,255,0.75)', '#ffffff'
+    ];
+
+    opacities.forEach((style, i) => {
+      const dot = document.createElement('span');
+      dot.className = 'habit-dot';
+      if (style === 'empty') {
+        dot.style.background = 'rgba(255,255,255,0.05)';
+        dot.style.boxShadow = 'inset 0 0 0 0.6px rgba(255,255,255,0.3)';
+      } else {
+        dot.style.background = style;
+      }
+      dot.title = `Day ${i + 1} completion`;
+      dot.addEventListener('click', () => {
+        dot.style.background = '#00e1ff';
+        dot.style.boxShadow = '0 0 8px #00e1ff';
+      });
+      grid.appendChild(dot);
+    });
+  }
+
+  buildHabitGrid('dockHabitGrid');
+  buildHabitGrid('galleryHabitGrid');
+
+  window.logHabitToday = function() {
+    state.habitsLogged++;
+    const countEl = document.getElementById('habitsTodayCount');
+    if (countEl) countEl.textContent = `${state.habitsLogged} of 5 habits`;
+  };
+
+  // --- 9. Tasks & Notes Interactive Checkboxes ---
+  window.toggleTaskDone = function(row) {
+    const line = row.querySelector('.flyout-line');
+    const check = row.querySelector('.flyout-check');
+    if (!line || !check) return;
+
+    const isDone = line.classList.toggle('is-done');
+    check.classList.toggle('is-done', isDone);
+    if (isDone) {
+      check.innerHTML = '<svg viewBox="0 0 14 14" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 7.4 L5.4 10.6 L12 3.6"/></svg>';
+    } else {
+      check.innerHTML = '';
+    }
+  };
+
+  window.addNewTask = function(e) {
+    e.preventDefault();
+    const input = document.getElementById('newTaskInput');
+    if (!input || !input.value.trim()) return;
+
+    const text = input.value.trim();
+    input.value = '';
+
+    const newRow = document.createElement('div');
+    newRow.className = 'flyout-row';
+    newRow.onclick = function() { window.toggleTaskDone(this); };
+    newRow.innerHTML = `
+      <span class="flyout-check"></span>
+      <span class="flyout-line">${text}</span>
+      <span class="flyout-meta mono">Just now</span>
+    `;
+
+    const form = input.closest('.flyout-composer');
+    form.parentNode.insertBefore(newRow, form);
+  };
+
+  window.toggleNoteCheck = function(row) {
+    const line = row.querySelector('.flyout-line');
+    const check = row.querySelector('.flyout-check');
+    if (!line || !check) return;
+
+    const isDone = line.classList.toggle('is-done');
+    check.classList.toggle('is-done', isDone);
+    if (isDone) {
+      check.innerHTML = '<svg viewBox="0 0 14 14" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 7.4 L5.4 10.6 L12 3.6"/></svg>';
+    } else {
+      check.innerHTML = '';
+    }
+  };
+
+  window.addNewNote = function(e) {
+    e.preventDefault();
+    const input = document.getElementById('newNoteInput');
+    if (!input || !input.value.trim()) return;
+
+    const text = input.value.trim();
+    input.value = '';
+
+    const newRow = document.createElement('div');
+    newRow.className = 'flyout-row';
+    newRow.onclick = function() { window.toggleNoteCheck(this); };
+    newRow.innerHTML = `
+      <span class="flyout-check"></span>
+      <span class="flyout-line">${text}</span>
+      <span class="flyout-meta mono">Just now</span>
+    `;
+
+    const form = input.closest('.flyout-composer');
+    form.parentNode.insertBefore(newRow, form);
+  };
+
+  // --- 10. Copy Homebrew Command ---
+  function handleBrewCopy(btnId) {
+    const cmd = 'brew install --cask sidedeck';
+    navigator.clipboard.writeText(cmd).then(() => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      }
+    }).catch(() => {
+      prompt('Copy Homebrew command:', cmd);
+    });
+  }
+
+  const copyBrewBtn = document.getElementById('copyBrewBtn');
+  if (copyBrewBtn) {
+    copyBrewBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleBrewCopy('copyBrewText');
+    });
+  }
+
+  const brewBox = document.getElementById('brewBox');
+  if (brewBox) {
+    brewBox.addEventListener('click', () => {
+      handleBrewCopy('copyBrewText');
+    });
+  }
+
+  window.copyBrewCmd = function(e) {
+    if (e) e.stopPropagation();
+    handleBrewCopy('planBrewCopy');
+  };
+
+  // --- 11. Live Online Visitor Presence Simulation ---
+  const countEl = document.getElementById('onlineCount');
+  if (countEl) {
+    let count = 24;
+    setInterval(() => {
+      const delta = Math.random() > 0.5 ? 1 : -1;
+      count = Math.max(16, Math.min(38, count + delta));
+      countEl.textContent = count;
+    }, 12000);
+  }
+
+  // --- 12. Settings Edge Selection ---
+  window.setEdge = function(edge) {
+    const dock = document.querySelector('.mac-dock');
+    if (dock) {
+      if (edge === 'left') {
+        dock.style.left = '14px';
+        dock.style.right = 'auto';
+      } else {
+        dock.style.left = 'auto';
+        dock.style.right = '14px';
+      }
+    }
+  };
+
+})();

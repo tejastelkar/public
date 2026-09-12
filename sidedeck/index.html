@@ -3,328 +3,703 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SideDeck : Floating macOS Dock & Productivity Cards</title>
-  <meta name="description" content="A native macOS floating companion dock on your screen edge. Live battery and Wi-Fi hardware status, focus timer, habits matrix, fluid water reservoir, and quick notes. Free and open source.">
+  <title>SideDeck — your day, on the side</title>
+  <meta name="description" content="A small always-on dock for macOS. The task you are on, the time, your notes, your water and your battery, at the edge of the screen instead of behind a window.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SideDeck">
-  <meta property="og:title" content="SideDeck : Floating macOS Dock & Productivity Cards">
-  <meta property="og:description" content="A sleek obsidian dock living on the edge of your screen. Built with pure Swift, SwiftUI, and native macOS hardware monitoring.">
+  <meta property="og:title" content="SideDeck — your day, on the side">
+  <meta property="og:description" content="A small always-on dock for macOS. The task you are on, the time, your notes, your water and your battery, at the edge of the screen instead of behind a window.">
   <meta property="og:image" content="/assets/sidedeck-icon.png">
   <link rel="icon" href="/assets/sidedeck-icon.png" type="image/png">
-  <link rel="preconnect" href="https://rsms.me/">
-  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="apple-touch-icon" href="/assets/sidedeck-icon.png">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 </head>
 <body>
+  <!-- Atmospheric Procedural Desk Background -->
+  <div class="desk" aria-hidden="true"></div>
+
+  <!-- Real Mac Desktop Wallpaper Background -->
+  <div class="wall" aria-hidden="true">
+    <img src="/assets/hero.jpg" alt="macOS Desktop Wallpaper" class="wall-photo" decoding="async">
+    <div class="wall-scrim"></div>
+  </div>
+
   <!-- Top Navigation Bar -->
   <header class="topbar">
     <div class="brand">
-      <a class="wordmark" href="/">
-        <img src="/assets/atlas-mark.svg" alt="Atlas Studios" class="avatar-logo atlas-logo-mark" width="22" height="22">
-        <span class="brand-name">Atlas Studios</span>
+      <a class="topbar-wordmark" href="/">
+        <img src="/assets/atlas-mark.svg" alt="Atlas Studios" width="20" height="20">
+        <span>Atlas Studios</span>
       </a>
       <span class="nav-divider">/</span>
       <a class="crumb-app" href="/sidedeck/">
-        <img src="/assets/sidedeck-icon.png" alt="SideDeck Logo" class="crumb-icon" width="22" height="22">
-        <span class="crumb-name">SideDeck</span>
+        <img src="/assets/sidedeck-icon.png" alt="SideDeck" class="crumb-icon" width="20" height="20">
+        <span>SideDeck</span>
       </a>
       <span class="badge os">macOS 14+</span>
-      <a class="pill" href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-        <span>github.com/tejastelkar/sidedeck</span>
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 6h7M6.5 3 9.5 6l-3 3"/></svg>
+      <a class="topbar-pill" href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span>GitHub</span>
       </a>
-      <a class="pill back-pill" href="/" title="Back to Homepage">
+      <a class="topbar-pill back-pill" href="/" title="Back to All Apps">
         <span>← All Apps</span>
       </a>
     </div>
 
-    <!-- Live Visitors Presence Pill -->
     <div class="topbar-actions">
-      <aside class="presence-counter" id="presenceCounter" title="Live active visitors across Tejas Telkar's open source hub">
-        <span class="counter-content counter-live">
+      <aside class="presence-counter" id="presenceCounter">
+        <span class="counter-content">
           <span class="live-dot"></span>
           <strong id="onlineCount">24</strong>
-          <span class="presence-label">users online today</span>
-        </span>
-        <span class="counter-content counter-info" id="presenceHint">
-          Real-time active visitors browsing SideDeck
+          <span>users online</span>
         </span>
       </aside>
     </div>
   </header>
 
-  <main class="stage">
-    <!-- Hero Section -->
-    <section class="intro">
-      <div class="pill-kicker">
-        <span class="kicker-dot"></span> Native macOS Utility : 1:1 Sydedock Architecture
-      </div>
-      <h1>A sleek floating dock right on the edge of your screen.</h1>
-      <p class="lede">
-        SideDeck sits gracefully on your screen edge as an obsidian companion. Access a Pomodoro focus timer, live digital clock, real battery and Wi-Fi system hardware monitors, habit streaks, fluid hydration reservoir, and quick notes without opening a window or breaking focus.
-      </p>
-    </section>
-
-    <!-- CTAs & Install -->
-    <div class="actions">
-      <div class="purchase-row">
-        <a class="button primary" id="downloadBtn" href="/assets/SideDeck-1.2.0.dmg" download="SideDeck-1.2.0.dmg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.08 1.73-.95 2.76 1.01.08 2.05-.51 2.68-1.26z"/></svg>
-          <span>Download SideDeck</span>
-          <span class="amount">v1.2.0 : 2.5 MB : Free</span>
-        </a>
-        <div class="brew-box" id="brewBox" title="Click to copy Homebrew install command">
-          <code id="brewCmd">brew install --cask sidedeck</code>
-          <button class="copy-btn" id="copyBrewBtn" aria-label="Copy command">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            <span id="copyText">Copy</span>
-          </button>
-        </div>
-        <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="kofi-donate-btn" title="Support developer on Ko-fi">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-          <span>Support on Ko-fi</span>
-        </a>
-      </div>
-    </div>
-
-    <!-- Live Interactive Preview & Simulator -->
-    <figure class="figure">
-      <div class="dock-showcase-card">
-        <div class="showcase-header">
-          <div class="showcase-title-group">
-            <img src="/assets/sidedeck-icon.png" alt="SideDeck" class="showcase-icon" width="28" height="28">
-            <div>
-              <h3>Interactive SideDeck Flyouts</h3>
-              <p>Hover or click any widget card on the right to inspect its callout beak flyout</p>
+  <main>
+    <!-- Split Layout (Story on Left, Sticky Live Mac on Right) -->
+    <div class="layout">
+      <!-- Left Column: Story & Features -->
+      <div class="column">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+          <div class="wordmark">
+            <img src="/assets/sidedeck-icon.png" alt="SideDeck 3D Logo" width="44" height="44">
+            <span>SideDeck</span>
+          </div>
+          <h1>Your day, on the <em>side</em>.</h1>
+          <p class="lede">A small always-on dock for macOS. Everything you keep checking, at the edge of the screen.</p>
+          <div class="actions">
+            <a class="buy" href="/assets/SideDeck-1.2.0.dmg" download="SideDeck-1.2.0.dmg" id="mainDownloadBtn">
+              <svg viewBox="0 0 22 26" width="14" height="16" aria-hidden="true"><path d="M18.1 13.8c0-3.1 2.5-4.6 2.6-4.7-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1-.9 0-2.4-1.1-4-1.1-2 0-3.9 1.2-5 3-2.1 3.7-.5 9.1 1.5 12.1 1 1.5 2.2 3.2 3.8 3.1 1.5-.1 2.1-1 3.9-1 1.8 0 2.3 1 3.9 1 1.6 0 2.6-1.5 3.6-3 1.1-1.7 1.6-3.4 1.6-3.5 0 0-3.1-1.2-3.1-4.7ZM15.2 4.7c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.6-1.7Z" fill="currentColor"></path></svg>
+              <span>Download SideDeck — Free</span>
+            </a>
+            <div class="brew-box" id="brewBox" title="Click to copy Homebrew install command">
+              <code id="brewCmd">brew install --cask sidedeck</code>
+              <button class="copy-btn" id="copyBrewBtn" aria-label="Copy brew command">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span id="copyBrewText">Copy</span>
+              </button>
             </div>
-          </div>
-          <div class="showcase-actions">
-            <span class="hotkey-pill" title="Toggle Dock Hotkey">⌥D</span>
-          </div>
-        </div>
-
-        <!-- Interactive Dock Stage -->
-        <div class="dock-stage" id="dockStage">
-          <!-- Active Flyout Viewport -->
-          <div class="flyout-viewport" id="flyoutViewport">
-            <!-- Active flyout content rendered dynamically by app.js -->
-            <div class="flyout-box active-flyout" id="flyoutContent">
-              <div class="flyout-header-row">
-                <span class="flyout-title">Battery &amp; Wi-Fi</span>
-                <span class="flyout-status-chip">Live Hardware</span>
-              </div>
-              <div class="battery-hero-block">
-                <div class="battery-hero-top">
-                  <strong class="battery-pct">68%</strong>
-                  <span class="battery-time">5h 43m left</span>
-                </div>
-                <div class="battery-bar-track">
-                  <div class="battery-bar-fill" style="width: 68%;"></div>
-                </div>
-              </div>
-              <div class="wifi-hero-block">
-                <div class="wifi-line">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-                  <strong>Connected</strong>
-                  <span class="wifi-dbm">Signal: -65 dBm · Active</span>
-                </div>
-                <div class="wifi-chip-row">
-                  <span class="wifi-chip active">Home 5G</span>
-                  <span class="wifi-chip">Studio</span>
-                  <span class="wifi-chip">Cafe Guest</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- The Floating Dock Column -->
-          <div class="dock-column" id="dockColumn">
-            <!-- 1. Focus -->
-            <button class="card-btn" data-widget="focus">
-              <div class="card-focus-mini">
-                <div class="bolt-ring">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <span class="focus-time">04:38</span>
-                <span class="focus-title">Draw landing</span>
-              </div>
-            </button>
-
-            <!-- 2. Clock -->
-            <button class="card-btn" data-widget="clock">
-              <div class="card-clock-mini">
-                <strong class="clock-time">9:48 <small>PM</small></strong>
-                <span class="clock-date">Fri 11 Sep</span>
-              </div>
-            </button>
-
-            <!-- 3. Battery / Wi-Fi (Active by default) -->
-            <button class="card-btn active" data-widget="battery">
-              <div class="card-status-mini">
-                <div class="battery-capsule">
-                  <span class="battery-num">68%</span>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-                </div>
-                <div class="dots-row">
-                  <span class="dot active"></span>
-                  <span class="dot active"></span>
-                  <span class="dot active"></span>
-                  <span class="dot"></span>
-                </div>
-              </div>
-            </button>
-
-            <!-- 4. Habits -->
-            <button class="card-btn" data-widget="habits">
-              <div class="card-habits-mini">
-                <div class="habits-matrix-preview">
-                  <span class="hdot d0"></span><span class="hdot d1"></span><span class="hdot d2"></span><span class="hdot d4"></span>
-                  <span class="hdot d3"></span><span class="hdot d4"></span><span class="hdot d1"></span><span class="hdot d2"></span>
-                  <span class="hdot d0"></span><span class="hdot d3"></span><span class="hdot d4"></span><span class="hdot d4"></span>
-                </div>
-              </div>
-            </button>
-
-            <!-- 5. Hydration -->
-            <button class="card-btn" data-widget="water">
-              <div class="card-water-mini">
-                <span class="water-timer">01:38</span>
-                <div class="water-wave-tank">
-                  <div class="wave-shape"></div>
-                </div>
-              </div>
-            </button>
-
-            <!-- 6. Notes -->
-            <button class="card-btn" data-widget="notes">
-              <div class="card-notes-mini">
-                <span class="notes-tag">Notes</span>
-                <span class="note-line"> Ship update</span>
-                <span class="note-line"> Call framer</span>
-                <span class="note-line"> Rent, Friday</span>
-              </div>
-            </button>
-
-            <!-- 7. Bottom Handle -->
-            <div class="dock-handle-pill">
-              <span class="handle-bar"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </figure>
-
-    <!-- Deep Technical Architecture Cards -->
-    <div class="stack">
-      <section class="card">
-        <h2>Engineering Architecture</h2>
-        <dl>
-          <div class="row">
-            <dt>Live macOS Hardware Integration</dt>
-            <dd>Interfaces directly with macOS <code>IOKit.ps</code> (Power Sources) to query live battery percentage, AC adapter status, and calculate battery depletion curves. Connects to <code>CoreWLAN</code> to read real wireless interface power, active network SSID, and RSSI dBm signal strength.</dd>
-          </div>
-          <div class="row">
-            <dt>Spring Physics Callout Geometry</dt>
-            <dd>Every flyout popover features a mathematical callout beak shape computed in real time. The beak points precisely at the vertical center of the hovered card with zero pixel mismatch across density modes.</dd>
-          </div>
-          <div class="row">
-            <dt>Key-Capable Floating Panel</dt>
-            <dd>Subclasses <code>NSPanel</code> with <code>canBecomeKey = true</code> and custom first-responder management. You can type tasks, edit checklist items, and take quick notes directly inside floating flyouts without bringing a heavy window forward.</dd>
-          </div>
-          <div class="row">
-            <dt>Click-Through Transparency</dt>
-            <dd>Custom <code>hitTest</code> architecture passes mouse clicks through transparent bounds when idle, so underlying browser tabs, code editors, and desktop icons remain 100% interactive without phantom clicks.</dd>
-          </div>
-          <div class="row">
-            <dt>Full Persistence & Zero Telemetry</dt>
-            <dd>All tasks, habit histories, water intake, notes, and customization preferences persist safely in local macOS <code>UserDefaults</code>. Zero network requests, zero telemetry, and zero tracking.</dd>
-          </div>
-        </dl>
-      </section>
-
-      <!-- App Specifications -->
-      <section class="card specs-card">
-        <h2>Technical Specifications</h2>
-        <div class="specs-grid">
-          <div class="spec-col">
-            <span class="spec-label">SYSTEM REQUIREMENTS</span>
-            <span class="spec-val">macOS 14.0 Sonoma or later (macOS 15 Sequoia ready)</span>
-          </div>
-          <div class="spec-col">
-            <span class="spec-label">ARCHITECTURE</span>
-            <span class="spec-val">Universal Binary (Apple Silicon M1/M2/M3/M4 &amp; Intel)</span>
-          </div>
-          <div class="spec-col">
-            <span class="spec-label">APP SIZE</span>
-            <span class="spec-val">2.5 MB DMG (Zero dependencies)</span>
-          </div>
-          <div class="spec-col">
-            <span class="spec-label">MEMORY FOOTPRINT</span>
-            <span class="spec-val">~18 MB RAM, zero background CPU drain</span>
-          </div>
-          <div class="spec-col">
-            <span class="spec-label">FRAMEWORK</span>
-            <span class="spec-val">Pure Swift 5.10, SwiftUI, AppKit, IOKit, CoreWLAN</span>
-          </div>
-          <div class="spec-col">
-            <span class="spec-label">SOURCE CODE</span>
-            <span class="spec-val"><a href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">github.com/tejastelkar/sidedeck</a></span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Support Developer & Donation Card -->
-      <section class="card support-card">
-        <div class="support-flex">
-          <div class="support-icon-box">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-          </div>
-          <div class="support-text">
-            <h3>Support Independent Mac Craftsmanship</h3>
-            <p>SideDeck is 100% free and open-source. If you enjoy having physical fluid cards and live hardware monitoring on your Mac desktop, consider buying me a coffee on Ko-fi to fund continuous updates, new widgets, and performance tuning!</p>
-            <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="kofi-submit-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-              <span>Support on Ko-fi (ko-fi.com/tejastelkar)</span>
+            <a class="quiet" href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+              <span>Support on Ko-fi</span>
             </a>
           </div>
-        </div>
-      </section>
+          <p class="fineprint">macOS 14 and later, Apple silicon and Intel. Free and open source.</p>
+          <p class="hint">That dock is running. The clock is your clock.</p>
+        </section>
 
-      <!-- About Developer -->
-      <section class="card developer-card">
-        <div class="dev-flex">
-          <img src="/assets/tejas.png" alt="Tejas Telkar" class="dev-avatar" width="64" height="64">
-          <div class="dev-text">
-            <h3>Crafted by Tejas Telkar</h3>
-            <p>Software and AI systems engineer based in Pune, India. Designing tactile, fast, and private native macOS utilities with Apple platform purity.</p>
-            <div class="dev-links">
-              <a href="/" class="dev-link">← All Open Source Apps</a>
-              <a href="https://github.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">GitHub Profile</a>
-              <a href="https://x.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">@tejastelkar</a>
-              <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="dev-link">Ko-fi Sponsor</a>
+        <!-- Feature 1: Focus -->
+        <section data-card="focus" class="feature" id="feature-focus">
+          <h2>One task, <em>counting down</em></h2>
+          <p class="body">The top card is whatever you are working on. Press the bolt and the ring empties as the time goes; at zero the task is done and the next moves up.</p>
+        </section>
+
+        <!-- Feature 2: Clock -->
+        <section data-card="clock" class="feature" id="feature-clock">
+          <h2>The time, <em>without</em> the menu bar</h2>
+          <p class="body">Figures or a dial, as two separate widgets, so you keep the one you actually read. Seconds and the date are optional.</p>
+        </section>
+
+        <!-- Feature 3: Status -->
+        <section data-card="status" class="feature" id="feature-status">
+          <h2>Battery and Wi‑Fi, <em>in one outline</em></h2>
+          <p class="body">The charge and whether you are online, inside an outline that is the battery too: it fills and runs down around the figure, blue while it charges. Put the percentage or the symbol away and it closes into a ring.</p>
+        </section>
+
+        <!-- Feature 4: Habits -->
+        <section data-card="habits" class="feature" id="feature-habits">
+          <h2>Six weeks, <em>at a glance</em></h2>
+          <p class="body">Every day you finish something fills a dot, brighter the more you did. Thirty-six of them: long enough to see a streak, short enough to still care.</p>
+        </section>
+
+        <!-- Feature 5: Hydration -->
+        <section data-card="hydration" class="feature" id="feature-hydration">
+          <h2>A glass of water, <em>on a timer</em></h2>
+          <p class="body">The glass drains as the clock runs down and fills when you drink. Water, not a progress bar: it pours, it sloshes, it settles. Leave it empty and the card glows at you.</p>
+        </section>
+
+        <!-- Feature 6: Notes -->
+        <section data-card="notes" class="feature" id="feature-notes">
+          <h2>The three lines you keep <em>re-reading</em></h2>
+          <p class="body">Notes and sticky paper on the dock, not in an app you have to open. Click a card, write, click away. It is saved.</p>
+        </section>
+      </div>
+
+      <!-- Right Column: Sticky Simulated Mac Dock -->
+      <div class="rail-column">
+        <div class="rail">
+          <div class="mac">
+            <div class="mac-screen">
+              <!-- Menu Bar -->
+              <div class="mac-menubar">
+                <svg viewBox="0 0 22 26" width="13" height="15" aria-hidden="true"><path d="M18.1 13.8c0-3.1 2.5-4.6 2.6-4.7-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1-.9 0-2.4-1.1-4-1.1-2 0-3.9 1.2-5 3-2.1 3.7-.5 9.1 1.5 12.1 1 1.5 2.2 3.2 3.8 3.1 1.5-.1 2.1-1 3.9-1 1.8 0 2.3 1 3.9 1 1.6 0 2.6-1.5 3.6-3 1.1-1.7 1.6-3.4 1.6-3.5 0 0-3.1-1.2-3.1-4.7ZM15.2 4.7c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.6-1.7Z" fill="currentColor"></path></svg>
+                <b>SideDeck</b>
+                <span>File</span><span>Edit</span><span>View</span><span>Window</span><span>Help</span>
+              </div>
+
+              <!-- macOS Dock Attached to Screen Edge -->
+              <div class="mac-dock">
+                <div class="dock-stack">
+                  <div class="dock" id="mainDock">
+
+                    <!-- 1. Focus Card -->
+                    <div class="card-wrap" data-card-key="focus" data-lit="true">
+                      <div class="focus-backing" role="button" aria-label="25 minutes left on Draw the new landing page">
+                        <div class="card" style="display:flex;flex-direction:column;align-items:center;gap:calc(var(--u) * 25);padding:calc(var(--u) * 28)">
+                          <svg viewBox="0 0 157.641 157.641" width="calc(var(--u) * 157.641)" height="calc(var(--u) * 157.641)" aria-hidden="true" style="display:block;overflow:visible;margin:calc(var(--u) * -11.48)">
+                            <defs>
+                              <linearGradient id="bolt-ring-grad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stop-color="var(--ring-top)"></stop>
+                                <stop offset="1" stop-color="var(--ring-bottom)"></stop>
+                              </linearGradient>
+                            </defs>
+                            <!-- Track -->
+                            <path d="M 78.82 11.48 L 37.58 11.48 C 23.17 11.48 11.48 23.17 11.48 37.58 L 11.48 120.06 C 11.48 134.47 23.17 146.16 37.58 146.16 L 120.06 146.16 C 134.47 146.16 146.16 134.47 146.16 120.06 L 146.16 37.58 C 146.16 23.17 134.47 11.48 120.06 11.48 L 78.82 11.48" fill="none" stroke="var(--bolt-ring)" stroke-width="22.96"></path>
+                            <!-- Progress Ring -->
+                            <path id="boltProgressPath" class="bolt-ring-progress" d="M 78.82 11.48 L 37.58 11.48 C 23.17 11.48 11.48 23.17 11.48 37.58 L 11.48 120.06 C 11.48 134.47 23.17 146.16 37.58 146.16 L 120.06 146.16 C 134.47 146.16 146.16 134.47 146.16 120.06 L 146.16 37.58 C 146.16 23.17 134.47 11.48 120.06 11.48 L 78.82 11.48" fill="none" stroke="url(#bolt-ring-grad)" stroke-width="10.44" stroke-linecap="round" stroke-dasharray="494 494" stroke-dashoffset="65"></path>
+                            <!-- Bolt Glyph -->
+                            <path d="M108.094 60.8638C106.538 60.2792 104.896 59.953 103.234 59.8981C97.8904 59.5118 89.328 59.5118 85.4974 59.5118C86.8172 56.5826 89.4245 50.8207 90.6799 48.1811C90.8409 47.7948 91.5169 46.9257 91.5169 46.2498C91.5169 45.5738 90.1971 44.254 89.2958 45.8313C89.2958 46.0244 88.9417 46.5073 88.6198 47.1832C86.8172 50.8207 82.4072 60.2522 82.4072 60.2522C82.3111 60.4417 82.261 60.6513 82.261 60.8638C82.261 61.0763 82.3111 61.2858 82.4072 61.4754C82.5204 61.6521 82.6782 61.7958 82.8648 61.8918C83.0513 61.9879 83.2599 62.033 83.4695 62.0226C90.715 61.9576 97.9584 62.3015 105.165 63.0527H105.616C105.488 63.2956 105.349 63.532 105.197 63.7608C103.179 66.3472 101.03 68.829 98.7595 71.1966C94.6714 75.5422 89.6821 80.5316 85.4974 84.6196C81.9244 88.257 63.7695 105.221 55.7865 111.627L54.5311 112.592C55.2863 110.029 56.3682 107.573 57.7501 105.285C61.3875 98.5899 67.2138 89.8021 72.4607 81.1432C72.7922 80.7146 72.972 80.1881 72.972 79.6463C72.972 79.1046 72.7922 78.5781 72.4607 78.1495C72.0263 77.6214 71.4243 77.2579 70.7546 77.1195C69.5248 76.9771 68.2827 76.9771 67.0529 77.1195L56.5269 77.377H54.4346C54.6921 76.7976 55.0784 76.0894 55.3359 75.3812C58.2329 67.2373 65.9906 48.1489 68.4692 43.1918C69.8533 42.8377 73.1367 42.7733 73.4264 42.7411C75.8406 42.548 78.3192 42.4514 80.7978 42.387H92.0641C92.2037 42.3877 92.3418 42.359 92.4696 42.303C92.5975 42.2469 92.7121 42.1646 92.8062 42.0615C92.9002 41.9583 92.9716 41.8366 93.0156 41.7042C93.0597 41.5717 93.0755 41.4315 93.062 41.2926C93.0755 41.1536 93.0597 41.0134 93.0156 40.881C92.9716 40.7485 92.9002 40.6268 92.8062 40.5237C92.7121 40.4205 92.5975 40.3383 92.4696 40.2822C92.3418 40.2261 92.2037 40.1975 92.0641 40.1981H78.8664C76.9994 40.1981 75.1002 40.1981 73.1689 40.4235H67.9864C67.4101 40.4752 66.8777 40.7529 66.5056 41.196C64.188 45.3484 55.529 65.5313 52.2779 74.0293C51.8005 75.1843 51.3921 76.3667 51.0547 77.5701C50.9418 77.9072 50.9242 78.2689 51.0037 78.6153C51.0832 78.9618 51.2568 79.2796 51.5053 79.5337C52.0417 79.9804 52.6851 80.28 53.3723 80.4028C54.4429 80.5039 55.5207 80.5039 56.5913 80.4028L66.9885 80.435C67.4472 80.489 67.8999 80.586 68.3404 80.7247C62.1922 90.6069 55.4646 100.489 52.4388 107.152C51.4633 109.052 50.8416 111.114 50.604 113.236C50.5086 113.957 50.6041 114.69 50.8809 115.362C51.1577 116.034 51.6061 116.622 52.1813 117.067C52.5363 117.279 52.9424 117.392 53.3562 117.392C53.7701 117.392 54.1762 117.279 54.5311 117.067C55.8344 116.316 57.0632 115.443 58.2007 114.459C66.1837 108.021 84.3386 90.6069 87.9438 86.9695C93.7057 81.1753 100.82 73.5464 105.262 68.4605C106.991 66.7371 108.312 64.6469 109.125 62.3445C109.098 62.029 108.989 61.726 108.808 61.466C108.627 61.2061 108.381 60.9984 108.094 60.8638Z" fill="#fff"></path>
+                          </svg>
+                          <div class="pill mono" style="width:calc(var(--u) * 157.64);height:calc(var(--u) * 58);margin-inline:calc(var(--u) * -11.48);font-size:calc(var(--u) * 35);color:#fff;gap:calc(var(--u) * 9);line-height:1">
+                            <span id="focusMinutes">24</span><span style="color:var(--colon)">:</span><span id="focusSeconds">38</span>
+                          </div>
+                        </div>
+                        <div class="focus-strip">
+                          <span class="mono" id="focusTaskName">Draw the new landing page</span>
+                        </div>
+                      </div>
+
+                      <!-- Focus Flyout -->
+                      <div class="flyout" id="flyout-focus" role="group" aria-label="Tasks">
+                        <div class="flyout-column">
+                          <div class="flyout-head">
+                            <span class="flyout-title">Tasks</span>
+                            <span class="flyout-trailing mono" id="flyoutTasksRemaining">2 to go</span>
+                          </div>
+                          <div class="flyout-row is-selected" id="taskRow1" onclick="toggleTaskDone(this)">
+                            <span class="flyout-check"><svg viewBox="0 0 14 14" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 7.4 L5.4 10.6 L12 3.6"/></svg></span>
+                            <span class="flyout-line">Draw the new landing page</span>
+                            <span class="flyout-meta mono">Active</span>
+                          </div>
+                          <div class="flyout-row" id="taskRow2" onclick="toggleTaskDone(this)">
+                            <span class="flyout-check"></span>
+                            <span class="flyout-line">Review PR comments on GitHub</span>
+                            <span class="flyout-meta mono">Up next</span>
+                          </div>
+                          <div class="flyout-row is-done-row" id="taskRow3" onclick="toggleTaskDone(this)">
+                            <span class="flyout-check is-done"><svg viewBox="0 0 14 14" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 7.4 L5.4 10.6 L12 3.6"/></svg></span>
+                            <span class="flyout-line is-done">Compile SideDeck DMG build</span>
+                            <span class="flyout-meta mono">Done</span>
+                          </div>
+                          <form class="flyout-composer" onsubmit="addNewTask(event)">
+                            <input type="text" class="flyout-field" id="newTaskInput" placeholder="Add a task...">
+                            <button type="submit" class="flyout-button is-prominent">Add</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 2. Digital Clock Card -->
+                    <div class="card-wrap" data-card-key="clock" data-lit="true">
+                      <div class="card" style="height:calc(var(--u) * 132);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u) * 6)">
+                        <div style="display:flex;align-items:baseline;gap:calc(var(--u) * 6)">
+                          <span class="mono" id="dockClockTime" style="font-size:calc(var(--u) * 44);color:#fff;line-height:1">12:59</span>
+                        </div>
+                        <span id="dockClockDate" style="font-size:calc(var(--u) * 22);color:rgba(255,255,255,0.5)">Sat, Sep 12</span>
+                      </div>
+
+                      <!-- Clock Flyout -->
+                      <div class="flyout" id="flyout-clock" role="group" aria-label="Digital clock">
+                        <div class="flyout-column">
+                          <div class="flyout-head">
+                            <span class="flyout-title">Digital clock</span>
+                            <span class="flyout-trailing mono" id="flyoutClockSeconds">:45</span>
+                          </div>
+                          <div class="flyout-hero flyout-clock-hero">
+                            <div class="flyout-clock-time">
+                              <b id="flyoutClockBig">12:59</b>
+                              <i id="flyoutClockPeriod">PM</i>
+                            </div>
+                            <span class="flyout-clock-date" id="flyoutClockFullDate">Saturday, September 12</span>
+                          </div>
+                          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">
+                            <span class="flyout-caption">Format</span>
+                            <div class="flyout-capsule">
+                              <button class="flyout-chip is-on" id="fmtSystem" onclick="setClockFormat('system')">System</button>
+                              <button class="flyout-chip" id="fmt12" onclick="setClockFormat('12')">12-hr</button>
+                              <button class="flyout-chip" id="fmt24" onclick="setClockFormat('24')">24-hr</button>
+                            </div>
+                          </div>
+                          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">
+                            <span class="flyout-caption">On the card</span>
+                            <div style="display:flex;gap:6px">
+                              <button class="flyout-chip is-on" id="toggleSeconds" onclick="toggleClockSeconds()">Seconds</button>
+                              <button class="flyout-chip is-on" id="toggleDate" onclick="toggleClockDate()">Date</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 3. Status (Battery & Wi-Fi) Card -->
+                    <div class="card-wrap" data-card-key="status" data-lit="true">
+                      <div class="status-widget" role="img" aria-label="Battery 72 percent, Wi-Fi online">
+                        <svg class="status-outline" viewBox="0 0 172 66" aria-hidden="true">
+                          <path d="M 51 62.5 L 33 62.5 A 29.5 29.5 0 0 1 33 3.5 L 139 3.5 A 29.5 29.5 0 0 1 139 62.5 L 121 62.5" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="7" stroke-linecap="round"></path>
+                          <path class="status-charge" d="M 51 62.5 L 33 62.5 A 29.5 29.5 0 0 1 33 3.5 L 139 3.5 A 29.5 29.5 0 0 1 139 62.5 L 121 62.5" pathLength="1" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-dasharray="0.72 2"></path>
+                        </svg>
+                        <div class="status-contents">
+                          <span class="status-figure mono"><span id="dockBatteryVal">72</span><span class="status-sign">%</span></span>
+                          <svg viewBox="0 0 26 20" width="calc(var(--u) * 26)" height="calc(var(--u) * 20)" aria-hidden="true" style="overflow:visible;display:block">
+                            <g fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round">
+                              <path d="M 7.343 12.343 A 8 8 0 0 1 18.657 12.343"></path>
+                              <path d="M 3.1 8.1 A 14 14 0 0 1 22.9 8.1"></path>
+                            </g>
+                            <circle cx="13" cy="16.2" r="2.6" fill="#fff"></circle>
+                          </svg>
+                        </div>
+                        <span class="status-dots" aria-hidden="true">
+                          <i style="background:#fff"></i>
+                          <i style="background:#fff"></i>
+                          <i style="background:#fff"></i>
+                          <i style="background:rgba(255,255,255,0.22)"></i>
+                        </span>
+                      </div>
+
+                      <!-- Status Flyout -->
+                      <div class="flyout" id="flyout-status" role="group" aria-label="Battery and Wi-Fi">
+                        <div class="flyout-column">
+                          <div class="flyout-head">
+                            <span class="flyout-title">Hardware Status</span>
+                            <span class="flyout-trailing mono">Connected</span>
+                          </div>
+                          <!-- Battery Hero -->
+                          <div class="flyout-hero flyout-battery-hero">
+                            <span>
+                              <span class="flyout-battery-percent mono" id="flyoutBatteryPct">72%</span>
+                              <span class="flyout-battery-detail">4h 20m remaining</span>
+                            </span>
+                            <span class="flyout-battery-glyph" aria-hidden="true">
+                              <i style="width:calc(72% - 6px)"></i>
+                            </span>
+                          </div>
+                          <!-- Wi-Fi Hero -->
+                          <div class="flyout-row flyout-wifi-hero">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                            <div class="flyout-wifi-text">
+                              <span class="flyout-wifi-name">Atlas-Studio-5G</span>
+                              <span class="flyout-wifi-detail mono">Signal 100% : 780 Mbps : 192.168.1.42</span>
+                            </div>
+                          </div>
+                          <p class="flyout-caption">Polled live via IOKit power source and CoreWLAN native Darwin interfaces.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 4. Habits Card -->
+                    <div class="card-wrap" data-card-key="habits" data-lit="true">
+                      <div class="card" style="height:calc(var(--u) * 190.674);display:grid;place-items:center;padding:calc(var(--u) * 22)" role="img" aria-label="The last thirty-six days">
+                        <div class="habit-grid" id="dockHabitGrid">
+                          <!-- 36 dots generated via JS or markup -->
+                        </div>
+                      </div>
+
+                      <!-- Habits Flyout -->
+                      <div class="flyout" id="flyout-habits" data-wide="true" role="group" aria-label="Habits">
+                        <div class="flyout-column">
+                          <div class="flyout-head">
+                            <span class="flyout-title">Habits Matrix</span>
+                            <span class="flyout-trailing mono">6 day streak</span>
+                          </div>
+                          <div class="flyout-hero flyout-day">
+                            <span>
+                              <span class="flyout-day-label">Today's Progress</span>
+                              <span class="flyout-day-count mono" id="habitsTodayCount">4 of 5 habits</span>
+                            </span>
+                            <button class="flyout-button is-prominent" onclick="logHabitToday()">+ Log Habit</button>
+                          </div>
+                          <p class="flyout-caption">Hover over any dot in the 36-day grid to inspect completion count.</p>
+                          <div class="flyout-chart">
+                            <span><i style="height:45%"></i><b>M</b></span>
+                            <span><i style="height:70%"></i><b>T</b></span>
+                            <span><i style="height:90%"></i><b>W</b></span>
+                            <span><i style="height:60%"></i><b>T</b></span>
+                            <span><i style="height:100%"></i><b>F</b></span>
+                            <span class="is-today"><i style="height:80%"></i><b>S</b></span>
+                            <span><i style="height:20%"></i><b>S</b></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 5. Hydration Card -->
+                    <div class="card-wrap" data-card-key="hydration" data-lit="true">
+                      <div class="card" style="height:calc(var(--u) * 190.674);padding:calc(var(--u) * 12)" role="img" aria-label="Next drink in 02:00">
+                        <div style="height:calc(var(--u) * 40);display:grid;place-items:center;position:relative;z-index:2">
+                          <span class="mono" id="dockWaterTimer" style="font-size:calc(var(--u) * 35);color:#fff;line-height:1">02:00</span>
+                        </div>
+                        <svg class="water" viewBox="0 0 166.67 115.34" width="calc(var(--u) * 166.67)" height="calc(var(--u) * 115.34)" preserveAspectRatio="none" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="water-body-grad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stop-color="#00e1ff"></stop>
+                              <stop offset="0.9" stop-color="#1b79ff"></stop>
+                            </linearGradient>
+                            <linearGradient id="water-sheen-grad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stop-color="rgba(255,255,255,0.5)"></stop>
+                              <stop offset="1" stop-color="rgba(255,255,255,0)"></stop>
+                            </linearGradient>
+                            <clipPath id="water-clip-mask">
+                              <path d="M 0 0 L 166.67 0 L 166.67 82.34 A 33 33 0 0 1 133.67 115.34 L 33 115.34 A 33 33 0 0 1 0 82.34 Z"></path>
+                            </clipPath>
+                          </defs>
+                          <g clip-path="url(#water-clip-mask)">
+                            <path id="waterSheenPath" d="M 0 117 L 0 16 Q 41 12 83 5 Q 125 16 166 16 L 166 117 Z" fill="url(#water-sheen-grad)"></path>
+                            <path id="waterBodyPath" d="M 0 117 L 0 22 Q 41 24 83 21 Q 125 12 166 21 L 166 117 Z" fill="url(#water-body-grad)"></path>
+                          </g>
+                        </svg>
+                      </div>
+
+                      <!-- Hydration Flyout -->
+                      <div class="flyout" id="flyout-hydration" role="group" aria-label="Hydration">
+                        <div class="flyout-column">
+                          <div class="flyout-head">
+                            <span class="flyout-title">Hydration</span>
+                            <span class="flyout-trailing mono" id="flyoutWaterToday">4 glasses today</span>
+                          </div>
+                          <div class="flyout-hero flyout-next-row">
+                            <span class="flyout-next-block">
+                              <span class="flyout-caption">Next reminder in</span>
+                              <span class="flyout-next-time mono" id="flyoutWaterNextTimer">14:22</span>
+                            </span>
+                            <button class="flyout-button is-prominent" onclick="drinkWaterGlass()">+ Drink a glass</button>
+                          </div>
+                          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">
+                            <span class="flyout-caption">Interval</span>
+                            <div class="flyout-stepper">
+                              <button class="flyout-step" onclick="adjustInterval(-5)">−</button>
+                              <span class="flyout-step-value mono" id="intervalValue">45 min</span>
+                              <button class="flyout-step" onclick="adjustInterval(5)">+</button>
+                            </div>
+                          </div>
+                          <p class="flyout-caption">Fluid slosh physics respond to screen movements and drinking events.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 6. Notes Card -->
+                    <div class="card-wrap" data-card-key="notes" data-lit="true">
+                      <div class="card" style="height:calc(var(--u) * 177);padding:calc(var(--u) * 17);display:flex;flex-direction:column;gap:calc(var(--u) * 5)">
+                        <div class="pill" style="width:calc(var(--u) * 156.674);height:calc(var(--u) * 33);border-radius:calc(var(--u) * 35);justify-content:flex-start;padding:calc(var(--u) * 5) calc(var(--u) * 15);background:linear-gradient(180deg, #000 0%, #2f2f2f 100%)">
+                          <span class="mono" style="font-size:calc(var(--u) * 16);color:#fff">Notes</span>
+                        </div>
+                        <div style="height:calc(var(--u) * 32);display:flex;align-items:center;gap:calc(var(--u) * 5);padding:0 calc(var(--u) * 5);border-bottom:0.5px solid rgba(255,255,255,0.09)">
+                          <span style="width:calc(var(--u) * 14);height:calc(var(--u) * 14);border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 0.6px rgba(255,255,255,0.35)"></span>
+                          <span style="font-size:calc(var(--u) * 16);color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Ship the update</span>
+                        </div>
+                        <div style="height:calc(var(--u) * 32);display:flex;align-items:center;gap:calc(var(--u) * 5);padding:0 calc(var(--u) * 5);border-bottom:0.5px solid rgba(255,255,255,0.09)">
+                          <span style="width:calc(var(--u) * 14);height:calc(var(--u) * 14);border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 0.6px rgba(255,255,255,0.35)"></span>
+                          <span style="font-size:calc(var(--u) * 16);color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Call the framer back</span>
+                        </div>
+                        <div style="height:calc(var(--u) * 32);display:flex;align-items:center;gap:calc(var(--u) * 5);padding:0 calc(var(--u) * 5);border-bottom:none">
+                          <span style="width:calc(var(--u) * 14);height:calc(var(--u) * 14);border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 0.6px rgba(255,255,255,0.35)"></span>
+                          <span style="font-size:calc(var(--u) * 16);color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Rent, Friday</span>
+                        </div>
+                      </div>
+
+                      <!-- Notes Flyout -->
+                      <div class="flyout" id="flyout-notes" role="group" aria-label="Notes">
+                        <div class="flyout-column">
+                          <div class="flyout-head">
+                            <span class="flyout-title">Quick Notes</span>
+                            <span class="flyout-trailing mono">3 notes</span>
+                          </div>
+                          <div class="flyout-row" onclick="toggleNoteCheck(this)">
+                            <span class="flyout-check"></span>
+                            <span class="flyout-line">Ship the update</span>
+                            <span class="flyout-meta mono">2m ago</span>
+                          </div>
+                          <div class="flyout-row" onclick="toggleNoteCheck(this)">
+                            <span class="flyout-check"></span>
+                            <span class="flyout-line">Call the framer back</span>
+                            <span class="flyout-meta mono">1h ago</span>
+                          </div>
+                          <div class="flyout-row" onclick="toggleNoteCheck(this)">
+                            <span class="flyout-check"></span>
+                            <span class="flyout-line">Rent, Friday</span>
+                            <span class="flyout-meta mono">Yesterday</span>
+                          </div>
+                          <form class="flyout-composer" onsubmit="addNewNote(event)">
+                            <input type="text" class="flyout-field" id="newNoteInput" placeholder="Add a quick note...">
+                            <button type="submit" class="flyout-button is-prominent">Save</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- 7. Settings Gear Handle -->
+                  <div class="handle-footprint">
+                    <button type="button" class="handle" id="settingsHandle" aria-label="Settings" onclick="toggleSettingsFlyout()">
+                      <svg class="handle-gear" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M8.82 4.12 L9.96 0.99 L14.04 0.99 L15.18 4.12 L15.32 4.18 L18.34 2.77 L21.23 5.66 L19.82 8.68 L19.88 8.82 L23.01 9.96 L23.01 14.04 L19.88 15.18 L19.82 15.32 L21.23 18.34 L18.34 21.23 L15.32 19.82 L15.18 19.88 L14.04 23.01 L9.96 23.01 L8.82 19.88 L8.68 19.82 L5.66 21.23 L2.77 18.34 L4.18 15.32 L4.12 15.18 L0.99 14.04 L0.99 9.96 L4.12 8.82 L4.18 8.68 L2.77 5.66 L5.66 2.77 L8.68 4.18ZM15.50 12.00A3.5 3.5 0 1 0 8.50 12.00A3.5 3.5 0 1 0 15.50 12.00Z" fill="currentColor" fill-rule="evenodd"></path>
+                      </svg>
+                    </button>
+
+                    <!-- Settings Flyout -->
+                    <div class="flyout" id="flyout-settings" role="group" aria-label="SideDeck Settings" style="display:none;">
+                      <div class="flyout-column">
+                        <div class="flyout-head">
+                          <span class="flyout-title">SideDeck Settings</span>
+                          <span class="flyout-trailing mono">v1.2.0</span>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0">
+                          <span class="flyout-caption">Dock Edge</span>
+                          <div class="flyout-capsule">
+                            <button class="flyout-chip" onclick="setEdge('left')">Left</button>
+                            <button class="flyout-chip is-on" onclick="setEdge('right')">Right</button>
+                          </div>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0">
+                          <span class="flyout-caption">Auto-hide when idle</span>
+                          <button class="flyout-chip is-on" id="btnAutohide" onclick="this.classList.toggle('is-on')">Enabled</button>
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0">
+                          <span class="flyout-caption">Launch at Login</span>
+                          <button class="flyout-chip is-on" id="btnLogin" onclick="this.classList.toggle('is-on')">Enabled</button>
+                        </div>
+                        <div class="flyout-composer" style="justify-content:space-between">
+                          <span class="flyout-caption">Support development</span>
+                          <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="flyout-button is-prominent">Ko-fi Sponsor</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- Footer -->
-      <footer>
-        <div class="footer-left">
-          <span>(c) <span id="year"></span> SideDeck by Atlas Studios. Handcrafted by <a href="https://github.com/tejastelkar" target="_blank" rel="noopener">Tejas Telkar</a>.</span>
-        </div>
-        <nav class="links">
-          <a href="/">All Apps</a>
-          <a href="/foldy/">Foldy</a>
-          <a href="/duosound/">DuoSound</a>
-          <a href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener">Ko-fi</a>
-        </nav>
-      </footer>
+      </div>
     </div>
+
+    <!-- Gallery Section (Widget Board) -->
+    <section class="gallery">
+      <div class="shell gallery-grid">
+        <div class="gallery-copy">
+          <h2>Only the widgets you use, in the order <em>you</em> want them.</h2>
+          <p class="body">Drag one out of Settings to add it where you drop it, or onto the settings button to take it off. Put the dock on any edge of any screen, or hide it until you reach for it. New widgets arrive with updates.</p>
+        </div>
+
+        <div class="gallery-widgets">
+          <div class="widget-board">
+            <!-- Col 1: Focus & Digital Clock -->
+            <div class="widget-column">
+              <div class="card-wrap" data-lit="true">
+                <div class="card" style="height:calc(var(--u) * 180);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u) * 14)">
+                  <svg viewBox="0 0 100 100" width="calc(var(--u) * 90)" height="calc(var(--u) * 90)">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="var(--bolt-ring)" stroke-width="12"></circle>
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="url(#bolt-ring-grad)" stroke-width="6" stroke-dasharray="251" stroke-dashoffset="50" stroke-linecap="round"></circle>
+                    <path d="M54 28 L38 52 L50 52 L46 72 L62 48 L50 48 Z" fill="#fff"></path>
+                  </svg>
+                  <span class="mono" style="font-size:calc(var(--u) * 26);color:#fff">25:00</span>
+                </div>
+              </div>
+              <div class="card-wrap" data-lit="true">
+                <div class="card" style="height:calc(var(--u) * 132);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u) * 6)">
+                  <span class="mono" style="font-size:calc(var(--u) * 44);color:#fff">12:59</span>
+                  <span style="font-size:calc(var(--u) * 20);color:rgba(255,255,255,0.45)">September 12</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Col 2: Analog Dial Clock & Sticky Note -->
+            <div class="widget-column">
+              <div class="card-wrap" data-lit="true">
+                <div class="card analog-clock-card">
+                  <svg viewBox="0 0 100 100" width="calc(var(--u) * 118)" height="calc(var(--u) * 118)" aria-hidden="true" style="display:block">
+                    <circle cx="50" cy="50" r="49.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"></circle>
+                    <!-- 12, 3, 6, 9 ticks -->
+                    <line x1="50" y1="11" x2="50" y2="3" stroke="rgba(255,255,255,0.95)" stroke-width="1.75" stroke-linecap="round"></line>
+                    <line x1="89" y1="50" x2="97" y2="50" stroke="rgba(255,255,255,0.95)" stroke-width="1.75" stroke-linecap="round"></line>
+                    <line x1="50" y1="89" x2="50" y2="97" stroke="rgba(255,255,255,0.95)" stroke-width="1.75" stroke-linecap="round"></line>
+                    <line x1="11" y1="50" x2="3" y2="50" stroke="rgba(255,255,255,0.95)" stroke-width="1.75" stroke-linecap="round"></line>
+                    <!-- Rotating Hands -->
+                    <line id="analogHourHand" x1="50" y1="50" x2="50" y2="28" stroke="#fff" stroke-width="3.5" stroke-linecap="round" transform="rotate(270 50 50)"></line>
+                    <line id="analogMinuteHand" x1="50" y1="50" x2="50" y2="15" stroke="#fff" stroke-width="2.5" stroke-linecap="round" transform="rotate(354 50 50)"></line>
+                    <line id="analogSecondHand" x1="50" y1="58" x2="50" y2="8" stroke="var(--ring-bottom)" stroke-width="1.2" stroke-linecap="round" transform="rotate(180 50 50)"></line>
+                    <circle cx="50" cy="50" r="2" fill="var(--ring-bottom)"></circle>
+                  </svg>
+                  <span style="font-size:calc(var(--u) * 18);color:rgba(255,255,255,0.45)">Analog dial</span>
+                </div>
+              </div>
+              <div class="card-wrap" data-lit="true">
+                <div class="card sticky-note">
+                  <p>Ask about the bolt animation — it should ease, not snap.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Col 3: Status Outline & Habits -->
+            <div class="widget-column">
+              <div class="card-wrap" data-lit="true">
+                <div class="status-widget">
+                  <svg class="status-outline" viewBox="0 0 172 66">
+                    <path d="M 51 62.5 L 33 62.5 A 29.5 29.5 0 0 1 33 3.5 L 139 3.5 A 29.5 29.5 0 0 1 139 62.5 L 121 62.5" fill="none" stroke="#fff" stroke-opacity="0.22" stroke-width="7" stroke-linecap="round"></path>
+                    <path class="status-charge" d="M 51 62.5 L 33 62.5 A 29.5 29.5 0 0 1 33 3.5 L 139 3.5 A 29.5 29.5 0 0 1 139 62.5 L 121 62.5" pathLength="1" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-dasharray="0.85 2"></path>
+                  </svg>
+                  <div class="status-contents">
+                    <span class="status-figure mono">85<span class="status-sign">%</span></span>
+                    <svg viewBox="0 0 26 20" width="calc(var(--u) * 26)" height="calc(var(--u) * 20)"><g fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"><path d="M 7.343 12.343 A 8 8 0 0 1 18.657 12.343"></path><path d="M 3.1 8.1 A 14 14 0 0 1 22.9 8.1"></path></g><circle cx="13" cy="16.2" r="2.6" fill="#fff"></circle></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="card-wrap" data-lit="true">
+                <div class="card" style="height:calc(var(--u) * 190.674);display:grid;place-items:center;padding:calc(var(--u) * 22)">
+                  <div class="habit-grid" id="galleryHabitGrid">
+                    <!-- filled by script -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Col 4: Battery Widget & Hydration & Assets -->
+            <div class="widget-column">
+              <div class="card-wrap" data-lit="true">
+                <div class="battery-widget">
+                  <div class="battery-glyph">
+                    <div class="battery-case">
+                      <span class="battery-fill" style="width:calc(var(--u) * 115);background:#fff"></span>
+                      <span class="battery-figure mono" style="color:#fff">72%</span>
+                    </div>
+                    <span class="battery-nub"></span>
+                  </div>
+                  <span class="battery-detail">4h 20m left</span>
+                </div>
+              </div>
+              <div class="card-wrap" data-lit="true">
+                <div class="card asset-card">
+                  <span style="font-size:calc(var(--u) * 20);color:rgba(255,255,255,0.3)">Assets</span>
+                  <span class="mono" style="font-size:calc(var(--u) * 30);color:#fff;line-height:1">12,480</span>
+                  <div style="display:flex;gap:calc(var(--u) * 3);height:calc(var(--u) * 12)">
+                    <span style="flex:0.5;border-radius:calc(var(--u) * 6);background:#ffffff"></span>
+                    <span style="flex:0.25;border-radius:calc(var(--u) * 6);background:#a1a1a1"></span>
+                    <span style="flex:0.15;border-radius:calc(var(--u) * 6);background:linear-gradient(180deg, var(--ring-top), var(--ring-bottom))"></span>
+                    <span style="flex:0.1;border-radius:calc(var(--u) * 6);background:rgba(255,255,255,0.55)"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Close / Plan & Download Section -->
+    <section class="close" id="download">
+      <div class="shell close-grid">
+        <div class="close-copy">
+          <h2>Free and open source. <em>Yours for good.</em></h2>
+          <p class="body">Native macOS app built with Swift and SwiftUI. Zero telemetry, sub-20MB memory footprint, and notarized for Apple silicon & Intel.</p>
+        </div>
+
+        <div>
+          <div class="plan">
+            <div class="plan-head">
+              <img src="/assets/sidedeck-icon.png" alt="SideDeck" width="40" height="40">
+              <span class="plan-name">SideDeck</span>
+              <span class="plan-size mono">v1.2.0 Universal</span>
+            </div>
+            <div class="plan-price">
+              <span class="plan-figure">Free</span>
+              <s class="plan-was" aria-label="Free forever">Open Source</s>
+            </div>
+            <ul class="plan-lines">
+              <li>
+                <span class="plan-check" aria-hidden="true"><svg viewBox="0 0 14 14" width="8" height="8"><path d="M2 7.4 L5.4 10.6 L12 3.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+                Native macOS app (pure Swift &amp; SwiftUI)
+              </li>
+              <li>
+                <span class="plan-check" aria-hidden="true"><svg viewBox="0 0 14 14" width="8" height="8"><path d="M2 7.4 L5.4 10.6 L12 3.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+                Real-time hardware monitoring (IOKit &amp; CoreWLAN)
+              </li>
+              <li>
+                <span class="plan-check" aria-hidden="true"><svg viewBox="0 0 14 14" width="8" height="8"><path d="M2 7.4 L5.4 10.6 L12 3.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+                Click-through transparency &amp; zero window obstruction
+              </li>
+              <li>
+                <span class="plan-check" aria-hidden="true"><svg viewBox="0 0 14 14" width="8" height="8"><path d="M2 7.4 L5.4 10.6 L12 3.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+                6 customizable productivity widgets out of the box
+              </li>
+              <li>
+                <span class="plan-check" aria-hidden="true"><svg viewBox="0 0 14 14" width="8" height="8"><path d="M2 7.4 L5.4 10.6 L12 3.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+                Apple silicon (M1-M4) &amp; Intel 64-bit universal binary
+              </li>
+              <li>
+                <span class="plan-check" aria-hidden="true"><svg viewBox="0 0 14 14" width="8" height="8"><path d="M2 7.4 L5.4 10.6 L12 3.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+                macOS 14 Sonoma &amp; macOS 15 Sequoia support
+              </li>
+            </ul>
+            <div class="plan-foot">
+              <a class="buy plan-cta" href="/assets/SideDeck-1.2.0.dmg" download="SideDeck-1.2.0.dmg">
+                <svg viewBox="0 0 22 26" width="14" height="16" aria-hidden="true"><path d="M18.1 13.8c0-3.1 2.5-4.6 2.6-4.7-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1-.9 0-2.4-1.1-4-1.1-2 0-3.9 1.2-5 3-2.1 3.7-.5 9.1 1.5 12.1 1 1.5 2.2 3.2 3.8 3.1 1.5-.1 2.1-1 3.9-1 1.8 0 2.3 1 3.9 1 1.6 0 2.6-1.5 3.6-3 1.1-1.7 1.6-3.4 1.6-3.5 0 0-3.1-1.2-3.1-4.7ZM15.2 4.7c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.6-1.7Z" fill="currentColor"></path></svg>
+                Download for macOS (DMG)
+              </a>
+              <div class="brew-box" onclick="copyBrewCmd(event)" title="Click to copy">
+                <code style="font-size:12px">brew install --cask sidedeck</code>
+                <button class="copy-btn" type="button"><span id="planBrewCopy">Copy</span></button>
+              </div>
+              <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" class="plan-kofi">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                <span>Support Developer on Ko-fi</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="shell footer-inner">
+        <span class="footer-product">
+          <img src="/assets/sidedeck-icon.png" alt="SideDeck" width="24" height="24">
+          <span class="mono">SideDeck 1.2.0</span>
+        </span>
+        <div class="footer-maker">
+          <a class="footer-by" href="https://x.com/tejastelkar" target="_blank" rel="noopener">
+            Handcrafted by <b>Tejas Telkar</b> in Pune, India
+          </a>
+          <span class="footer-rule" aria-hidden="true"></span>
+          <ul class="footer-socials">
+            <li>
+              <a href="https://x.com/tejastelkar" target="_blank" rel="noopener" aria-label="Tejas on X">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.9 2.5h3.4l-7.4 8.5 8.7 11.5h-6.8l-5.3-7-6.1 7H1.9l7.9-9.1L1.5 2.5h7l4.8 6.4 5.6-6.4Zm-1.2 18h1.9L7.4 4.4H5.4l12.3 16.1Z"/></svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/tejastelkar/sidedeck" target="_blank" rel="noopener" aria-label="GitHub Repository">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://ko-fi.com/tejastelkar" target="_blank" rel="noopener" aria-label="Ko-fi Sponsor">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   </main>
 
-  <script type="module" src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
